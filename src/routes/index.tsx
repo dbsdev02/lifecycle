@@ -12,20 +12,12 @@ import {
   Layers,
   MapPin,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, SplitText);
-}
+import { gsap, SplitText, prefersReducedMotion } from "@/lib/scroll";
 
 // welding / factory-sparks industrial images
 
 const heroImg        = "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1600&q=90&auto=format&fit=crop";
 const datacenterImg  = "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=85&auto=format&fit=crop";
-const itadImg        = "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=800&q=85&auto=format&fit=crop";
-const destructionImg = "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=85&auto=format&fit=crop";
 const globalImg      = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&auto=format&fit=crop";
 
 export const Route = createFileRoute("/")({
@@ -56,22 +48,30 @@ function SplitReveal({
   className,
   start = "top 85%",
   slideUp = true,
+  by = "words",
 }: {
   as?: "h1" | "h2" | "h3" | "p";
   children: ReactNode;
   className?: string;
   start?: string;
   slideUp?: boolean;
+  by?: "words" | "lines";
 }) {
   const ref = useRef<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const split = new SplitText(el, { type: "words", wordsClass: "split-word" });
-    if (slideUp) gsap.set(split.words, { yPercent: 100, opacity: 0 });
-    else gsap.set(split.words, { opacity: 0 });
-    const tween = gsap.to(split.words, {
+    if (prefersReducedMotion()) return;
+
+    const split =
+      by === "lines"
+        ? new SplitText(el, { type: "lines", linesClass: "split-word", mask: "lines" })
+        : new SplitText(el, { type: "words", wordsClass: "split-word" });
+    const targets = by === "lines" ? split.lines : split.words;
+    if (slideUp) gsap.set(targets, { yPercent: 100, opacity: 0 });
+    else gsap.set(targets, { opacity: 0 });
+    const tween = gsap.to(targets, {
       yPercent: 0,
       opacity: 1,
       duration: 0.6,
@@ -89,7 +89,7 @@ function SplitReveal({
       tween.kill();
       split.revert();
     };
-  }, [start, slideUp]);
+  }, [start, slideUp, by]);
 
   return (
     <Tag ref={ref as never} className={className}>
@@ -98,25 +98,111 @@ function SplitReveal({
   );
 }
 
-function useReveal<T extends HTMLElement>() {
+function useScrollFade<T extends HTMLElement>(opts?: {
+  y?: number;
+  scale?: number;
+  duration?: number;
+  stagger?: number;
+  ease?: string;
+  start?: string;
+  /** Animate the container's direct children instead of the container itself. */
+  children?: boolean;
+}) {
   const ref = useRef<T | null>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const targets = opts?.children ? Array.from(el.children) : el;
+    gsap.set(targets, { opacity: 0, y: opts?.y ?? 80, scale: opts?.scale ?? 1 });
+    const tween = gsap.to(targets, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: opts?.duration ?? 1,
+      ease: opts?.ease ?? "power3.out",
+      stagger: opts?.stagger ?? 0,
+      scrollTrigger: {
+        trigger: el,
+        start: opts?.start ?? "top 85%",
+        toggleActions: "play none none none",
+      },
+    });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return ref;
+}
+
+function RevealImage({
+  src,
+  alt,
+  className,
+  start = "top 90%",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  start?: string;
+}) {
+  const ref = useRef<HTMLImageElement | null>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    gsap.set(el, { scale: 1.15, opacity: 0, filter: "blur(16px)" });
+    const tween = gsap.to(el, {
+      scale: 1,
+      opacity: 1,
+      filter: "blur(0px)",
+      duration: 1.2,
+      ease: "power2.out",
+      scrollTrigger: { trigger: el, start, toggleActions: "play none none none" },
+    });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return <img ref={ref} src={src} alt={alt} loading="lazy" className={className} />;
+}
+
+function useCountUp(target: string, start = "top 85%") {
+  const ref = useRef<HTMLDivElement | null>(null);
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
+    const match = target.match(/^([\d.]+)(.*)$/);
+    if (!match) return;
+    const [, numStr, suffix] = match;
+    const value = parseFloat(numStr);
+    const decimals = (numStr.split(".")[1] || "").length;
+
+    if (prefersReducedMotion()) {
+      el.textContent = target;
+      return;
+    }
+
+    const counter = { n: 0 };
+    el.textContent = `0${suffix}`;
+    const tween = gsap.to(counter, {
+      n: value,
+      duration: 1.6,
+      ease: "power2.out",
+      scrollTrigger: { trigger: el, start, toggleActions: "play none none none" },
+      onUpdate: () => {
+        el.textContent = `${counter.n.toFixed(decimals)}${suffix}`;
       },
-      { threshold: 0.15 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return { ref, visible };
+    });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
+  }, [target, start]);
+  return ref;
 }
 
 function Nav() {
@@ -173,16 +259,42 @@ function Nav() {
 
 function Hero() {
   const word = useRotator(rotatingWords);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const bgRef = useRef<HTMLDivElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section || prefersReducedMotion()) return;
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: section, start: "top top", end: "bottom top", scrub: true },
+    });
+    tl.to(bgRef.current, { yPercent: 20, scale: 1.15, ease: "none" }, 0)
+      .to(overlayRef.current, { opacity: 0.15, ease: "none" }, 0)
+      .to(contentRef.current, { yPercent: -35, opacity: 0.2, ease: "none" }, 0);
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
+
   return (
-    <section className="relative h-screen min-h-[720px] w-full overflow-hidden bg-ink">
-      <img
-        src={heroImg}
-        alt=""
-        aria-hidden
-        className="absolute inset-0 h-full w-full object-cover opacity-90 animate-ken-burns"
-      />
+    <section
+      ref={sectionRef as never}
+      className="relative h-screen min-h-[720px] w-full overflow-hidden bg-ink"
+    >
+      <div ref={bgRef} className="absolute inset-0">
+        <img
+          src={heroImg}
+          alt=""
+          aria-hidden
+          className="h-full w-full object-cover opacity-90 animate-ken-burns"
+        />
+      </div>
       {/* Angled overlay panel like reference */}
       <div
+        ref={overlayRef}
         aria-hidden
         className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent"
       />
@@ -198,7 +310,10 @@ function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-4 pb-20 sm:px-6 md:pb-28">
+      <div
+        ref={contentRef}
+        className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-4 pb-20 sm:px-6 md:pb-28"
+      >
         <p className="mb-6 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-cream/80 animate-fade-in">
           <span className="h-px w-10 bg-cream/60" />
           Global ITAD & Data Center Services
@@ -250,14 +365,15 @@ function Hero() {
   );
 }
 
+// hex equivalents of --ink/--accent/--cream: GSAP's color tween can't parse
+// var()/oklch(), only hex/rgb/hsl.
 const panels = [
   {
     tag: "01 — Business",
     title: "Global ITAD Made Easy",
     body: "Transform IT asset disposition to match your mission. Our Link portal puts control of your ITAD program at your fingertips — worldwide.",
     cta: "Transform Your Program",
-    img: itadImg,
-    bg: "var(--ink)",
+    bg: "#1b0702",
     fg: "text-cream",
   },
   {
@@ -265,8 +381,7 @@ const panels = [
     title: "Connecting the Reverse & Forward Supply Chains",
     body: "As a driver of the circular economy, we help OEMs close the loop on their electronic supply chains — from take-back to recovered materials.",
     cta: "Explore More",
-    img: destructionImg,
-    bg: "var(--accent)",
+    bg: "#b26235",
     fg: "text-cream",
   },
   {
@@ -274,62 +389,96 @@ const panels = [
     title: "End-to-End Data Center Services",
     body: "Flexible, scalable solutions for decommissioning, server reconfiguration, and critical spare parts recovery — at any scale, on any timeline.",
     cta: "Discover Solutions",
-    img: datacenterImg,
-    bg: "var(--cream)",
+    bg: "#f9f4f0",
     fg: "text-ink",
   },
 ];
 
 function ScrollPanels() {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const reduced = prefersReducedMotion();
 
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current;
-    const els = panelRefs.current.filter((p): p is HTMLDivElement => p !== null);
-    if (!wrapper || els.length < 2) return;
+    const bg = bgRef.current;
+    const contents = contentRefs.current.filter((c): c is HTMLDivElement => c !== null);
+    if (!wrapper || !bg || reduced || contents.length !== panels.length) return;
 
-    gsap.set(els.slice(1), { yPercent: 100 });
+    // contents[0] stays as rendered (visible, in place); the rest start
+    // off-screen below, hidden, and fade in as their predecessor exits.
+    gsap.set(contents.slice(1), { y: "45vh", opacity: 0, pointerEvents: "none" });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: wrapper,
         start: "top top",
-        end: () => `+=${(els.length - 1) * window.innerHeight}`,
+        end: () => `+=${(contents.length - 1) * window.innerHeight}`,
         scrub: 0.6,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
-    els.slice(1).forEach((el) => {
-      tl.to(el, { yPercent: 0, ease: "none", duration: 1 });
+    contents.slice(1).forEach((el, i) => {
+      const pos = i;
+      // background morphs from the outgoing panel's color to the incoming one's.
+      tl.to(bg, { backgroundColor: panels[i + 1].bg, ease: "none", duration: 1 }, pos);
+      // outgoing heading slides up and disappears...
+      tl.to(contents[i], { y: "-45vh", opacity: 0, ease: "none", duration: 0.5 }, pos);
+      tl.set(contents[i], { pointerEvents: "none" }, pos);
+      // ...then the incoming heading rises from below and fades in.
+      tl.to(el, { y: 0, opacity: 1, ease: "none", duration: 0.6 }, pos + 0.3);
+      tl.set(el, { pointerEvents: "auto" }, pos + 0.3);
     });
 
     return () => {
       tl.scrollTrigger?.kill();
       tl.kill();
     };
-  }, []);
+  }, [reduced]);
+
+  if (reduced) {
+    return (
+      <section id="services" className="relative w-full">
+        {panels.map((p) => (
+          <div
+            key={p.title}
+            className={`relative flex min-h-[70vh] items-center ${p.fg}`}
+            style={{ backgroundColor: p.bg }}
+          >
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+              <div className="max-w-2xl">
+                <span className="text-xs uppercase tracking-[0.25em] opacity-70">{p.tag}</span>
+                <h3 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">{p.title}</h3>
+                <p className="mt-6 text-base leading-relaxed opacity-80 md:text-lg">{p.body}</p>
+                <a
+                  href="#contact"
+                  className="mt-8 inline-flex items-center gap-2 border-b pb-1 text-sm transition-colors hover:opacity-70"
+                >
+                  {p.cta} <ArrowUpRight className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
+    );
+  }
 
   return (
     <section id="services" ref={wrapperRef} className="relative h-screen w-full overflow-hidden">
+      <div ref={bgRef} className="absolute inset-0" style={{ backgroundColor: panels[0].bg }} />
       {panels.map((p, i) => (
         <div
           key={p.title}
           ref={(el) => {
-            panelRefs.current[i] = el;
+            contentRefs.current[i] = el;
           }}
-          className="absolute inset-0 flex items-center"
-          style={{ backgroundColor: p.bg, zIndex: i + 1 }}
+          className={`absolute inset-0 z-10 flex items-center ${p.fg}`}
         >
-          <img
-            src={p.img}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover opacity-25"
-          />
-          <div className={`relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 ${p.fg}`}>
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
             <div className="max-w-2xl">
               <span className="text-xs uppercase tracking-[0.25em] opacity-70">{p.tag}</span>
               <h3 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">{p.title}</h3>
@@ -349,21 +498,13 @@ function ScrollPanels() {
 }
 
 function About() {
-  const { ref, visible } = useReveal<HTMLDivElement>();
   return (
-    <section id="about" ref={ref} className="relative overflow-hidden bg-ink py-28 text-cream md:py-40">
+    <section id="about" className="relative overflow-hidden bg-ink py-28 text-cream md:py-40">
       <div className="mx-auto grid max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="text-xs uppercase tracking-[0.3em] text-cream/60">About Us</p>
           <div className="mt-10 aspect-[4/5] overflow-hidden rounded-2xl">
-            <img
-              src={globalImg}
-              alt="Global logistics"
-              loading="lazy"
-              className={`h-full w-full object-cover transition-transform duration-[2000ms] ${
-                visible ? "scale-100" : "scale-110"
-              }`}
-            />
+            <RevealImage src={globalImg} alt="Global logistics" className="h-full w-full object-cover" />
           </div>
         </div>
         <div className="lg:col-span-8">
@@ -394,16 +535,30 @@ const stats = [
   { n: "60+", label: "Circular centers worldwide" },
 ];
 
-function Impact() {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+function StatTile({ s }: { s: (typeof stats)[number] }) {
+  const countRef = useCountUp(s.n);
   return (
-    <section ref={ref} className="bg-cream py-28 md:py-36">
+    <div>
+      <div ref={countRef} className="font-display text-6xl text-ink md:text-7xl">
+        {s.n}
+      </div>
+      <div className="mt-3 h-px w-10 bg-accent" />
+      <p className="mt-4 text-sm text-ink-soft">{s.label}</p>
+    </div>
+  );
+}
+
+function Impact() {
+  const statsRef = useScrollFade<HTMLDivElement>({ children: true, stagger: 0.15, y: 30 });
+  return (
+    <section className="bg-cream py-28 md:py-36">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Impact</p>
             <SplitReveal
               as="h2"
+              by="lines"
               className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-7xl"
             >
               We focus on recovery <br />
@@ -416,21 +571,12 @@ function Impact() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-8 border-t border-ink/10 pt-14 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((s, i) => (
-            <div
-              key={s.label}
-              className="transition-all duration-1000"
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(30px)",
-                transitionDelay: `${i * 150}ms`,
-              }}
-            >
-              <div className="font-display text-6xl text-ink md:text-7xl">{s.n}</div>
-              <div className="mt-3 h-px w-10 bg-accent" />
-              <p className="mt-4 text-sm text-ink-soft">{s.label}</p>
-            </div>
+        <div
+          ref={statsRef}
+          className="mt-16 grid gap-8 border-t border-ink/10 pt-14 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {stats.map((s) => (
+            <StatTile key={s.label} s={s} />
           ))}
         </div>
       </div>
@@ -448,15 +594,19 @@ const capabilities = [
 ];
 
 function Capabilities() {
+  const gridRef = useScrollFade<HTMLDivElement>({ children: true, stagger: 0.15, y: 20, scale: 0.95 });
   return (
     <section className="bg-ink py-28 text-cream md:py-36">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <p className="text-xs uppercase tracking-[0.3em] text-cream/60">Capabilities</p>
-        <h2 className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-6xl">
+        <SplitReveal as="h2" className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-6xl">
           Every step of the <span className="italic">lifecycle,</span> under one program.
-        </h2>
+        </SplitReveal>
 
-        <div className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-cream/10 bg-cream/10 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          ref={gridRef}
+          className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-cream/10 bg-cream/10 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {capabilities.map(({ icon: Icon, title, body }) => (
             <div
               key={title}
@@ -481,16 +631,17 @@ const regions = [
 ];
 
 function GlobalCoverage() {
+  const regionsRef = useScrollFade<HTMLDivElement>({ children: true, stagger: 0.12, y: 24 });
   return (
     <section id="locations" className="relative overflow-hidden bg-cream py-28 md:py-36">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Global Coverage</p>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] md:text-6xl">
+            <SplitReveal as="h2" className="mt-6 font-display text-5xl leading-[1.05] md:text-6xl">
               Globally coordinated. <br />
               <span className="italic text-accent">Locally responsive.</span>
-            </h2>
+            </SplitReveal>
             <p className="mt-6 max-w-lg text-ink-soft">
               We simplify complex projects by providing one reliable IT asset disposition partner
               worldwide. Clients save time, avoid headaches, and benefit from a single, consistent
@@ -504,7 +655,7 @@ function GlobalCoverage() {
             </a>
           </div>
 
-          <div className="space-y-3">
+          <div ref={regionsRef} className="space-y-3">
             {regions.map((r, i) => (
               <details
                 key={r.name}
@@ -568,11 +719,11 @@ function Contact() {
       <div className="relative mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-2">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-cream/60">Contact Us Today</p>
-          <h2 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">
+          <SplitReveal as="h2" by="lines" className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">
             Optimize your <br />
             asset decisions <br />
             <span className="italic text-accent">with us.</span>
-          </h2>
+          </SplitReveal>
           <p className="mt-8 max-w-md text-cream/70">
             Need a global solution? Tell us about your program and a regional specialist will be in
             touch within one business day.
@@ -646,8 +797,9 @@ function Field({
 }
 
 function Footer() {
+  const ref = useScrollFade<HTMLDivElement>({ y: 40, duration: 0.9, start: "top 95%" });
   return (
-    <footer className="bg-ink pb-10 pt-16 text-cream/70">
+    <footer ref={ref} className="bg-ink pb-10 pt-16 text-cream/70">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 border-b border-cream/10 pb-14 md:grid-cols-4">
           <div className="md:col-span-2">
