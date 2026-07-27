@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import {
   ArrowUpRight,
   Globe,
@@ -12,8 +12,16 @@ import {
   Layers,
   MapPin,
 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+}
 
 // welding / factory-sparks industrial images
+
 const heroImg        = "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1600&q=90&auto=format&fit=crop";
 const datacenterImg  = "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=85&auto=format&fit=crop";
 const itadImg        = "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=800&q=85&auto=format&fit=crop";
@@ -40,6 +48,54 @@ function useRotator(words: string[], interval = 2400) {
     return () => clearInterval(t);
   }, [words.length, interval]);
   return words[i];
+}
+
+function SplitReveal({
+  as: Tag = "p",
+  children,
+  className,
+  start = "top 85%",
+  slideUp = true,
+}: {
+  as?: "h1" | "h2" | "h3" | "p";
+  children: ReactNode;
+  className?: string;
+  start?: string;
+  slideUp?: boolean;
+}) {
+  const ref = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const split = new SplitText(el, { type: "words", wordsClass: "split-word" });
+    if (slideUp) gsap.set(split.words, { yPercent: 100, opacity: 0 });
+    else gsap.set(split.words, { opacity: 0 });
+    const tween = gsap.to(split.words, {
+      yPercent: 0,
+      opacity: 1,
+      duration: 0.6,
+      stagger: 0.03,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start,
+        end: "bottom 15%",
+        toggleActions: "play none none reverse",
+      },
+    });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+      split.revert();
+    };
+  }, [start, slideUp]);
+
+  return (
+    <Tag ref={ref as never} className={className}>
+      {children}
+    </Tag>
+  );
 }
 
 function useReveal<T extends HTMLElement>() {
@@ -194,13 +250,15 @@ function Hero() {
   );
 }
 
-const cards = [
+const panels = [
   {
     tag: "01 — Business",
     title: "Global ITAD Made Easy",
     body: "Transform IT asset disposition to match your mission. Our Link portal puts control of your ITAD program at your fingertips — worldwide.",
     cta: "Transform Your Program",
     img: itadImg,
+    bg: "var(--ink)",
+    fg: "text-cream",
   },
   {
     tag: "02 — OEMs",
@@ -208,6 +266,8 @@ const cards = [
     body: "As a driver of the circular economy, we help OEMs close the loop on their electronic supply chains — from take-back to recovered materials.",
     cta: "Explore More",
     img: destructionImg,
+    bg: "var(--accent)",
+    fg: "text-cream",
   },
   {
     tag: "03 — Data Center",
@@ -215,55 +275,75 @@ const cards = [
     body: "Flexible, scalable solutions for decommissioning, server reconfiguration, and critical spare parts recovery — at any scale, on any timeline.",
     cta: "Discover Solutions",
     img: datacenterImg,
+    bg: "var(--cream)",
+    fg: "text-ink",
   },
 ];
 
-function ServiceCard({ c, i }: { c: (typeof cards)[number]; i: number }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
-  return (
-    <div
-      ref={ref}
-      className={`hover-lift group relative overflow-hidden rounded-2xl bg-ink text-cream transition-all duration-1000 ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-      }`}
-      style={{ transitionDelay: `${i * 120}ms` }}
-    >
-      <div className="relative h-64 overflow-hidden">
-        <img
-          src={c.img}
-          alt={c.title}
-          loading="lazy"
-          className="h-full w-full object-cover opacity-70 transition-transform duration-[1500ms] group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
-        <span className="absolute left-6 top-6 text-xs uppercase tracking-[0.25em] text-cream/80">
-          {c.tag}
-        </span>
-      </div>
-      <div className="p-8">
-        <h3 className="font-display text-3xl md:text-4xl">{c.title}</h3>
-        <p className="mt-4 text-sm leading-relaxed text-cream/70">{c.body}</p>
-        <a
-          href="#contact"
-          className="mt-8 inline-flex items-center gap-2 border-b border-cream/40 pb-1 text-sm transition-colors hover:border-accent hover:text-accent"
-        >
-          {c.cta} <ArrowUpRight className="h-4 w-4" />
-        </a>
-      </div>
-    </div>
-  );
-}
+function ScrollPanels() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-function ServicesCards() {
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current;
+    const els = panelRefs.current.filter((p): p is HTMLDivElement => p !== null);
+    if (!wrapper || els.length < 2) return;
+
+    gsap.set(els.slice(1), { yPercent: 100 });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: wrapper,
+        start: "top top",
+        end: () => `+=${(els.length - 1) * window.innerHeight}`,
+        scrub: 0.6,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+    els.slice(1).forEach((el) => {
+      tl.to(el, { yPercent: 0, ease: "none", duration: 1 });
+    });
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
+
   return (
-    <section id="services" className="relative bg-cream py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-8 md:grid-cols-3">
-          {cards.map((c, i) => (
-            <ServiceCard key={c.title} c={c} i={i} />
-          ))}
+    <section id="services" ref={wrapperRef} className="relative h-screen w-full overflow-hidden">
+      {panels.map((p, i) => (
+        <div
+          key={p.title}
+          ref={(el) => {
+            panelRefs.current[i] = el;
+          }}
+          className="absolute inset-0 flex items-center"
+          style={{ backgroundColor: p.bg, zIndex: i + 1 }}
+        >
+          <img
+            src={p.img}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover opacity-25"
+          />
+          <div className={`relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 ${p.fg}`}>
+            <div className="max-w-2xl">
+              <span className="text-xs uppercase tracking-[0.25em] opacity-70">{p.tag}</span>
+              <h3 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">{p.title}</h3>
+              <p className="mt-6 text-base leading-relaxed opacity-80 md:text-lg">{p.body}</p>
+              <a
+                href="#contact"
+                className="mt-8 inline-flex items-center gap-2 border-b pb-1 text-sm transition-colors hover:opacity-70"
+              >
+                {p.cta} <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
     </section>
   );
 }
@@ -287,23 +367,11 @@ function About() {
           </div>
         </div>
         <div className="lg:col-span-8">
-          <h2 className="font-display text-4xl leading-[1.1] md:text-6xl">
-            {"With circular centers across the globe, our ecosystem supports the largest ITAD, e-waste, decommissioning, and recovery programs for businesses, OEMs, and data centers."
-              .split(" ")
-              .map((w, i) => (
-                <span
-                  key={i}
-                  className="inline-block transition-all duration-700"
-                  style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? "translateY(0)" : "translateY(20px)",
-                    transitionDelay: `${i * 25}ms`,
-                  }}
-                >
-                  {w}&nbsp;
-                </span>
-              ))}
-          </h2>
+          <SplitReveal as="h2" className="font-display text-4xl leading-[1.1] md:text-6xl">
+            With circular centers across the globe, our ecosystem supports the largest ITAD,
+            e-waste, decommissioning, and recovery programs for businesses, OEMs, and data
+            centers.
+          </SplitReveal>
           <p className="mt-10 max-w-2xl font-display text-2xl italic text-cream/80 md:text-3xl">
             We are reliably hands on — so you can be hands off.
           </p>
@@ -334,10 +402,13 @@ function Impact() {
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Impact</p>
-            <h2 className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-7xl">
+            <SplitReveal
+              as="h2"
+              className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-7xl"
+            >
               We focus on recovery <br />
               <span className="italic text-accent">at a large scale.</span>
-            </h2>
+            </SplitReveal>
           </div>
           <p className="max-w-sm text-sm text-ink-soft">
             FY25 impact across our global circular network — measured, verified, and independently
@@ -622,7 +693,7 @@ function Home() {
     <main className="bg-cream">
       <Nav />
       <Hero />
-      <ServicesCards />
+      <ScrollPanels />
       <About />
       <Impact />
       <Capabilities />
