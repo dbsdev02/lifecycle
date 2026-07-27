@@ -13,10 +13,12 @@ import {
   MapPin,
 } from "lucide-react";
 
-import datacenterImg from "@/assets/datacenter.jpg";
-import itadImg from "@/assets/itad.jpg";
-import destructionImg from "@/assets/destruction.jpg";
-import globalImg from "@/assets/global.jpg";
+// welding / factory-sparks industrial images
+const heroImg        = "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1600&q=90&auto=format&fit=crop";
+const datacenterImg  = "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=85&auto=format&fit=crop";
+const itadImg        = "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=800&q=85&auto=format&fit=crop";
+const destructionImg = "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=85&auto=format&fit=crop";
+const globalImg      = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&auto=format&fit=crop";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -118,7 +120,7 @@ function Hero() {
   return (
     <section className="relative h-screen min-h-[720px] w-full overflow-hidden bg-ink">
       <img
-        src={datacenterImg}
+        src={heroImg}
         alt=""
         aria-hidden
         className="absolute inset-0 h-full w-full object-cover opacity-90 animate-ken-burns"
@@ -135,7 +137,7 @@ function Hero() {
         className="absolute left-16 top-32 hidden h-40 w-40 opacity-40 md:block"
         style={{
           backgroundImage:
-            "radial-gradient(circle, oklch(0.55 0.14 235) 1px, transparent 1px)",
+            "radial-gradient(circle, oklch(0.58 0.12 48) 1px, transparent 1px)",
           backgroundSize: "14px 14px",
         }}
       />
