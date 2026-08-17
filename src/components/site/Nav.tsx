@@ -29,11 +29,8 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="flex items-center gap-2 text-white mix-blend-difference">
-          <div className="grid h-9 w-9 place-items-center rounded-md border border-white/40">
-            <span className="font-display text-lg italic">S</span>
-          </div>
-          <span className="hidden font-display text-lg tracking-tight sm:block">SVG Metals</span>
+        <Link to="/" className="font-display text-lg tracking-tight text-white mix-blend-difference">
+          SVG Metals
         </Link>
 
         <nav
