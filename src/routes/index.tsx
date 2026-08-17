@@ -1,261 +1,37 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useLayoutEffect, useRef } from "react";
 import {
   ArrowUpRight,
-  Globe,
   ChevronDown,
   Recycle,
-  Server,
+  Award,
   ShieldCheck,
-  Truck,
+  Workflow,
   Factory,
   Layers,
   MapPin,
 } from "lucide-react";
-import { gsap, SplitText, prefersReducedMotion } from "@/lib/scroll";
+import { gsap, prefersReducedMotion } from "@/lib/scroll";
+import { useRotator, SplitReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
+import { CtaBand } from "@/components/site/CtaBand";
 
 // welding / factory-sparks industrial images
 
-const heroImg        = "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1600&q=90&auto=format&fit=crop";
-const datacenterImg  = "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=85&auto=format&fit=crop";
-const globalImg      = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&auto=format&fit=crop";
+const heroImg    = "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1600&q=90&auto=format&fit=crop";
+const aboutImg   = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&auto=format&fit=crop";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
 const rotatingWords = [
-  "Circular",
-  "Scalable",
   "Sustainable",
-  "Global",
+  "Integrated",
+  "High-Purity",
+  "Circular",
   "Resourceful",
   "Innovative",
 ];
-
-function useRotator(words: string[], interval = 2400) {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI((v) => (v + 1) % words.length), interval);
-    return () => clearInterval(t);
-  }, [words.length, interval]);
-  return words[i];
-}
-
-function SplitReveal({
-  as: Tag = "p",
-  children,
-  className,
-  start = "top 85%",
-  slideUp = true,
-  by = "words",
-}: {
-  as?: "h1" | "h2" | "h3" | "p";
-  children: ReactNode;
-  className?: string;
-  start?: string;
-  slideUp?: boolean;
-  by?: "words" | "lines";
-}) {
-  const ref = useRef<HTMLElement | null>(null);
-
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (prefersReducedMotion()) return;
-
-    const split =
-      by === "lines"
-        ? new SplitText(el, { type: "lines", linesClass: "split-word", mask: "lines" })
-        : new SplitText(el, { type: "words", wordsClass: "split-word" });
-    const targets = by === "lines" ? split.lines : split.words;
-    if (slideUp) gsap.set(targets, { yPercent: 100, opacity: 0 });
-    else gsap.set(targets, { opacity: 0 });
-    const tween = gsap.to(targets, {
-      yPercent: 0,
-      opacity: 1,
-      duration: 0.6,
-      stagger: 0.03,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: el,
-        start,
-        end: "bottom 15%",
-        toggleActions: "play none none reverse",
-      },
-    });
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-      split.revert();
-    };
-  }, [start, slideUp, by]);
-
-  return (
-    <Tag ref={ref as never} className={className}>
-      {children}
-    </Tag>
-  );
-}
-
-function useScrollFade<T extends HTMLElement>(opts?: {
-  y?: number;
-  scale?: number;
-  duration?: number;
-  stagger?: number;
-  ease?: string;
-  start?: string;
-  /** Animate the container's direct children instead of the container itself. */
-  children?: boolean;
-}) {
-  const ref = useRef<T | null>(null);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const targets = opts?.children ? Array.from(el.children) : el;
-    gsap.set(targets, { opacity: 0, y: opts?.y ?? 80, scale: opts?.scale ?? 1 });
-    const tween = gsap.to(targets, {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: opts?.duration ?? 1,
-      ease: opts?.ease ?? "power3.out",
-      stagger: opts?.stagger ?? 0,
-      scrollTrigger: {
-        trigger: el,
-        start: opts?.start ?? "top 85%",
-        toggleActions: "play none none none",
-      },
-    });
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return ref;
-}
-
-function RevealImage({
-  src,
-  alt,
-  className,
-  start = "top 90%",
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-  start?: string;
-}) {
-  const ref = useRef<HTMLImageElement | null>(null);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
-    gsap.set(el, { scale: 1.15, opacity: 0, filter: "blur(16px)" });
-    const tween = gsap.to(el, {
-      scale: 1,
-      opacity: 1,
-      filter: "blur(0px)",
-      duration: 1.2,
-      ease: "power2.out",
-      scrollTrigger: { trigger: el, start, toggleActions: "play none none none" },
-    });
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return <img ref={ref} src={src} alt={alt} loading="lazy" className={className} />;
-}
-
-function useCountUp(target: string, start = "top 85%") {
-  const ref = useRef<HTMLDivElement | null>(null);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const match = target.match(/^([\d.]+)(.*)$/);
-    if (!match) return;
-    const [, numStr, suffix] = match;
-    const value = parseFloat(numStr);
-    const decimals = (numStr.split(".")[1] || "").length;
-
-    if (prefersReducedMotion()) {
-      el.textContent = target;
-      return;
-    }
-
-    const counter = { n: 0 };
-    el.textContent = `0${suffix}`;
-    const tween = gsap.to(counter, {
-      n: value,
-      duration: 1.6,
-      ease: "power2.out",
-      scrollTrigger: { trigger: el, start, toggleActions: "play none none none" },
-      onUpdate: () => {
-        el.textContent = `${counter.n.toFixed(decimals)}${suffix}`;
-      },
-    });
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-  }, [target, start]);
-  return ref;
-}
-
-function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  const links = ["Data Center", "Business", "OEMs", "About", "Locations", "Resources"];
-  return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-3" : "py-5"
-      }`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
-        <a href="#" className="flex items-center gap-2 text-white mix-blend-difference">
-          <div className="grid h-9 w-9 place-items-center rounded-md border border-white/40">
-            <span className="font-display text-lg italic">L</span>
-          </div>
-          <span className="hidden font-display text-lg tracking-tight sm:block">
-            Lifecycle Services
-          </span>
-        </a>
-
-        <nav
-          className={`hidden items-center gap-8 rounded-full px-6 py-3 text-sm backdrop-blur-md transition-all lg:flex ${
-            scrolled ? "bg-white/95 text-ink shadow-lg" : "bg-white/80 text-ink"
-          }`}
-        >
-          {links.map((l) => (
-            <a key={l} href={`#${l.toLowerCase().replace(" ", "-")}`} className="link-underline">
-              {l}
-            </a>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <button className="hidden items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-sm text-ink backdrop-blur md:flex">
-            <Globe className="h-4 w-4" /> ENG <ChevronDown className="h-3 w-3" />
-          </button>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-cream transition-transform hover:scale-[1.03]"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Contact Us
-          </a>
-        </div>
-      </div>
-    </header>
-  );
-}
 
 function Hero() {
   const word = useRotator(rotatingWords);
@@ -316,7 +92,7 @@ function Hero() {
       >
         <p className="mb-6 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-cream/80 animate-fade-in">
           <span className="h-px w-10 bg-cream/60" />
-          Global ITAD & Data Center Services
+          Copper & Non-Ferrous Metals Recycling
         </p>
         <h1 className="font-display text-[13vw] leading-[0.95] text-cream md:text-[8vw]">
           <span className="block animate-fade-up">Delivering</span>
@@ -342,10 +118,10 @@ function Hero() {
           style={{ animationDelay: "0.4s" }}
         >
           <a
-            href="#services"
+            href="#products"
             className="group inline-flex items-center gap-2 rounded-full bg-cream px-6 py-3.5 text-sm font-medium text-ink transition-all hover:bg-accent hover:text-cream"
           >
-            Explore Our Services
+            Explore Our Products
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
           <a
@@ -369,28 +145,37 @@ function Hero() {
 // var()/oklch(), only hex/rgb/hsl.
 const panels = [
   {
-    tag: "01 — Business",
-    title: "Global ITAD Made Easy",
-    body: "Transform IT asset disposition to match your mission. Our Link portal puts control of your ITAD program at your fingertips — worldwide.",
-    cta: "Transform Your Program",
+    tag: "01 — Products",
+    title: "Copper & Brass, Engineered for Industry",
+    body: "From raw scrap to precision-engineered finished products, we manufacture a comprehensive range of copper and brass products for power, electrical, automotive, construction and industrial applications.",
+    cta: "View Our Products",
+    to: "/products",
     bg: "#1b0702",
     fg: "text-cream",
+    img: "https://images.unsplash.com/photo-1678119895596-411628b1f6be?w=1600&q=80&auto=format&fit=crop",
+    imgAlt: "Braided high-purity copper cable",
   },
   {
-    tag: "02 — OEMs",
-    title: "Connecting the Reverse & Forward Supply Chains",
-    body: "As a driver of the circular economy, we help OEMs close the loop on their electronic supply chains — from take-back to recovered materials.",
-    cta: "Explore More",
+    tag: "02 — Technologies",
+    title: "Everything Under One Roof, From Scrap to Finished Product",
+    body: "An integrated value chain — recycling, refining, processing and manufacturing — gives us greater control over the quality, purity, consistency and traceability of everything we make.",
+    cta: "Discover Our Technology",
+    to: "/technologies",
     bg: "#b26235",
     fg: "text-cream",
+    img: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop",
+    imgAlt: "Scrap metal being processed at a recycling yard",
   },
   {
-    tag: "03 — Data Center",
-    title: "End-to-End Data Center Services",
-    body: "Flexible, scalable solutions for decommissioning, server reconfiguration, and critical spare parts recovery — at any scale, on any timeline.",
-    cta: "Discover Solutions",
+    tag: "03 — Industries",
+    title: "Powering the Industries That Power the World",
+    body: "From the power grid to the vehicles on the road, from renewable energy installations to hospital gas lines — our copper and brass products serve the industries building tomorrow.",
+    cta: "See How We Serve You",
+    to: "/industries",
     bg: "#f9f4f0",
     fg: "text-ink",
+    img: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1600&q=80&auto=format&fit=crop",
+    imgAlt: "High-voltage power transmission lines at sunset",
   },
 ];
 
@@ -441,24 +226,34 @@ function ScrollPanels() {
 
   if (reduced) {
     return (
-      <section id="services" className="relative w-full">
+      <section id="products" className="relative w-full">
         {panels.map((p) => (
           <div
             key={p.title}
-            className={`relative flex min-h-[70vh] items-center ${p.fg}`}
+            className={`relative flex min-h-[70vh] items-center overflow-hidden ${p.fg}`}
             style={{ backgroundColor: p.bg }}
           >
-            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+            <img
+              src={p.img}
+              alt={p.imgAlt}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div
+              className="absolute inset-0"
+              style={{ background: `linear-gradient(90deg, ${p.bg} 0%, ${p.bg}e6 45%, ${p.bg}00 90%)` }}
+            />
+            <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6">
               <div className="max-w-2xl">
                 <span className="text-xs uppercase tracking-[0.25em] opacity-70">{p.tag}</span>
                 <h3 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">{p.title}</h3>
                 <p className="mt-6 text-base leading-relaxed opacity-80 md:text-lg">{p.body}</p>
-                <a
-                  href="#contact"
+                <Link
+                  to={p.to}
                   className="mt-8 inline-flex items-center gap-2 border-b pb-1 text-sm transition-colors hover:opacity-70"
                 >
                   {p.cta} <ArrowUpRight className="h-4 w-4" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -468,7 +263,7 @@ function ScrollPanels() {
   }
 
   return (
-    <section id="services" ref={wrapperRef} className="relative h-screen w-full overflow-hidden">
+    <section id="products" ref={wrapperRef} className="relative h-screen w-full overflow-hidden">
       <div ref={bgRef} className="absolute inset-0" style={{ backgroundColor: panels[0].bg }} />
       {panels.map((p, i) => (
         <div
@@ -476,9 +271,19 @@ function ScrollPanels() {
           ref={(el) => {
             contentRefs.current[i] = el;
           }}
-          className={`absolute inset-0 z-10 flex items-center ${p.fg}`}
+          className={`absolute inset-0 z-10 flex items-center overflow-hidden ${p.fg}`}
         >
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+          <img
+            src={p.img}
+            alt={p.imgAlt}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: `linear-gradient(90deg, ${p.bg} 0%, ${p.bg}e6 45%, ${p.bg}00 90%)` }}
+          />
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6">
             <div className="max-w-2xl">
               <span className="text-xs uppercase tracking-[0.25em] opacity-70">{p.tag}</span>
               <h3 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">{p.title}</h3>
@@ -504,24 +309,24 @@ function About() {
         <div className="lg:col-span-4">
           <p className="text-xs uppercase tracking-[0.3em] text-cream/60">About Us</p>
           <div className="mt-10 aspect-[4/5] overflow-hidden rounded-2xl">
-            <RevealImage src={globalImg} alt="Global logistics" className="h-full w-full object-cover" />
+            <RevealImage src={aboutImg} alt="SVG Metals manufacturing facility" className="h-full w-full object-cover" />
           </div>
         </div>
         <div className="lg:col-span-8">
           <SplitReveal as="h2" className="font-display text-4xl leading-[1.1] md:text-6xl">
-            With circular centers across the globe, our ecosystem supports the largest ITAD,
-            e-waste, decommissioning, and recovery programs for businesses, OEMs, and data
-            centers.
+            Since 1978, we&rsquo;ve grown from the Nakoda Group of Companies into an integrated
+            copper and non-ferrous metals recycling and manufacturing company &mdash; transforming
+            scrap into high-quality industrial products, entirely under one roof.
           </SplitReveal>
           <p className="mt-10 max-w-2xl font-display text-2xl italic text-cream/80 md:text-3xl">
-            We are reliably hands on — so you can be hands off.
+            We don&rsquo;t just recycle metal. We transform it.
           </p>
-          <a
-            href="#contact"
+          <Link
+            to="/about"
             className="mt-10 inline-flex items-center gap-2 rounded-full border border-cream/40 px-6 py-3 text-sm transition-colors hover:bg-cream hover:text-ink"
           >
             See What We Do <ArrowUpRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -529,10 +334,10 @@ function About() {
 }
 
 const stats = [
-  { n: "8.8M", label: "Assets refurbished for reuse" },
-  { n: "21M", label: "Kilograms processed globally" },
-  { n: "440K", label: "Tonnes CO₂e emissions avoided" },
-  { n: "60+", label: "Circular centers worldwide" },
+  { n: "1978", label: "Founded as the Nakoda Group of Companies" },
+  { n: "3", label: "ISO-certified management systems" },
+  { n: "13+", label: "Copper & brass product lines manufactured in-house" },
+  { n: "10", label: "Industries powered by our products" },
 ];
 
 function StatTile({ s }: { s: (typeof stats)[number] }) {
@@ -555,19 +360,19 @@ function Impact() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Impact</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Biggest Strength</p>
             <SplitReveal
               as="h2"
               by="lines"
               className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-7xl"
             >
-              We focus on recovery <br />
-              <span className="italic text-accent">at a large scale.</span>
+              An integrated value chain, <br />
+              <span className="italic text-accent">built under one roof.</span>
             </SplitReveal>
           </div>
           <p className="max-w-sm text-sm text-ink-soft">
-            FY25 impact across our global circular network — measured, verified, and independently
-            audited.
+            From scrap to finished product, without ever leaving our control — giving us greater
+            command over quality, purity and consistency at every stage.
           </p>
         </div>
 
@@ -585,12 +390,12 @@ function Impact() {
 }
 
 const capabilities = [
-  { icon: ShieldCheck, title: "Certified Data Destruction", body: "On-site & off-site shredding, degaussing, and NIST-compliant wiping with full chain-of-custody reporting." },
-  { icon: Server, title: "Data Center Decommissioning", body: "Turn-key racking, wiping, packing, and logistics — from a single cabinet to full-hall exits." },
-  { icon: Recycle, title: "Reuse & Refurbishment", body: "Maximize residual value through remarketing and refurbishment across a global buyer network." },
-  { icon: Truck, title: "Secure Logistics", body: "GPS-tracked, sealed vehicles and audited packaging for high-risk, high-value asset movement." },
-  { icon: Factory, title: "Downstream Recycling", body: "R2v3 and ISO-certified downstream partners closing the loop on end-of-life electronics." },
-  { icon: Layers, title: "Link Reporting Portal", body: "Live inventory, settlement, and sustainability reporting — one dashboard, every region." },
+  { icon: Recycle, title: "Recycling & Upcycling", body: "Copper scrap, cables, industrial waste and e-waste recovered and refined into high-purity raw material." },
+  { icon: Factory, title: "Manufacturing & Technology", body: "In-house conversion of recycled copper into a full range of finished and semi-finished copper and brass products." },
+  { icon: ShieldCheck, title: "Quality & Testing", body: "Quality embedded at every stage, from scrap sourcing and grading through to final product inspection." },
+  { icon: Award, title: "Certified Systems", body: "Operations backed by ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 certified systems." },
+  { icon: Layers, title: "Customized Products", body: "Tailored dimensions, grades and finishes, engineered to your specific project or industrial requirement." },
+  { icon: Workflow, title: "Integrated Value Chain", body: "Scrap, recycling, refining, processing and manufacturing — together under one roof, for full traceability." },
 ];
 
 function Capabilities() {
@@ -600,7 +405,7 @@ function Capabilities() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <p className="text-xs uppercase tracking-[0.3em] text-cream/60">Capabilities</p>
         <SplitReveal as="h2" className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-6xl">
-          Every step of the <span className="italic">lifecycle,</span> under one program.
+          Every step of the <span className="italic">value chain,</span> under one roof.
         </SplitReveal>
 
         <div
@@ -625,9 +430,8 @@ function Capabilities() {
 }
 
 const regions = [
-  { name: "Americas", cities: "New York · Chicago · Dallas · São Paulo · Toronto" },
-  { name: "EMEA", cities: "London · Amsterdam · Frankfurt · Dubai · Johannesburg" },
-  { name: "APAC", cities: "Singapore · Sydney · Tokyo · Mumbai · Shanghai" },
+  { name: "Corporate Office", cities: "803, DLH Park, S.V. Road, Goregaon West, Mumbai – 400104" },
+  { name: "Factory", cities: "Plot No. 35 & 36, Vitthal Industrial Complex, Aamgoan–Sanjan Road, Dongari, Talasari, District Palghar, Maharashtra – 401606" },
 ];
 
 function GlobalCoverage() {
@@ -637,22 +441,22 @@ function GlobalCoverage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Global Coverage</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Locations</p>
             <SplitReveal as="h2" className="mt-6 font-display text-5xl leading-[1.05] md:text-6xl">
-              Globally coordinated. <br />
-              <span className="italic text-accent">Locally responsive.</span>
+              Two sites, <br />
+              <span className="italic text-accent">one continuous chain.</span>
             </SplitReveal>
             <p className="mt-6 max-w-lg text-ink-soft">
-              We simplify complex projects by providing one reliable IT asset disposition partner
-              worldwide. Clients save time, avoid headaches, and benefit from a single, consistent
-              program across every location.
+              Our corporate office and manufacturing factory work as a single integrated operation
+              — giving us complete control over quality, purity, consistency and traceability from
+              scrap to finished product.
             </p>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="mt-10 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm text-cream transition-transform hover:scale-[1.03]"
             >
-              Explore Our Locations <ArrowUpRight className="h-4 w-4" />
-            </a>
+              Get in Touch <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </div>
 
           <div ref={regionsRef} className="space-y-3">
@@ -679,19 +483,19 @@ function GlobalCoverage() {
   );
 }
 
-const certs = ["R2v3", "ISO 27001", "ISO 9001", "ISO 14001", "ISO 45001", "DIPCOG", "Microsoft AR", "AS/NZS 5377", "AS/NZS 4801"];
+const certs = ["ISO 9001:2015", "ISO 14001:2015", "ISO 45001:2018"];
 
 function Certifications() {
   return (
-    <section className="border-y border-ink/10 bg-cream py-16">
+    <section id="certifications" className="border-y border-ink/10 bg-cream py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-wrap items-center justify-between gap-8">
-          <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Recognition for our work</p>
-          <a href="#" className="link-underline text-sm">View all certifications →</a>
+          <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Certified Operations</p>
+          <Link to="/contact" className="link-underline text-sm">Get in touch →</Link>
         </div>
         <div className="mt-10 overflow-hidden">
           <div className="marquee-track flex gap-12 whitespace-nowrap">
-            {[...certs, ...certs].map((c, i) => (
+            {[...certs, ...certs, ...certs].map((c, i) => (
               <div
                 key={i}
                 className="flex h-16 min-w-[160px] items-center justify-center rounded-lg border border-ink/10 bg-white px-6 font-display text-xl text-ink-soft"
@@ -706,144 +510,26 @@ function Certifications() {
   );
 }
 
-function Contact() {
+function FinalCta() {
   return (
-    <section id="contact" className="relative overflow-hidden bg-ink py-28 text-cream md:py-36">
-      <img
-        src={datacenterImg}
-        alt=""
-        aria-hidden
-        className="absolute inset-0 h-full w-full object-cover opacity-20 animate-ken-burns"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/80 to-ink" />
-      <div className="relative mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-2">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-cream/60">Contact Us Today</p>
-          <SplitReveal as="h2" by="lines" className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">
-            Optimize your <br />
-            asset decisions <br />
-            <span className="italic text-accent">with us.</span>
-          </SplitReveal>
-          <p className="mt-8 max-w-md text-cream/70">
-            Need a global solution? Tell us about your program and a regional specialist will be in
-            touch within one business day.
-          </p>
-          <div className="mt-10 space-y-2 text-sm text-cream/60">
-            <p>hello@lifecycleservices.example</p>
-            <p>+1 (555) 010 2040</p>
-          </div>
-        </div>
-
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          className="space-y-5 rounded-2xl border border-cream/10 bg-cream/[0.03] p-8 backdrop-blur"
-        >
-          <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="First name" />
-            <Field label="Last name" />
-          </div>
-          <Field label="Work email" type="email" />
-          <Field label="Company" />
-          <div>
-            <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-cream/60">
-              I'm interested in
-            </label>
-            <select className="w-full appearance-none rounded-lg border border-cream/20 bg-transparent px-4 py-3 text-sm text-cream focus:border-accent focus:outline-none">
-              <option className="bg-ink">ITAD services</option>
-              <option className="bg-ink">Data center decommissioning</option>
-              <option className="bg-ink">Purchasing equipment</option>
-              <option className="bg-ink">Other</option>
-            </select>
-          </div>
-          <Field label="Tell us about your project" textarea />
-          <button
-            type="submit"
-            className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 text-sm font-medium text-cream transition-transform hover:scale-[1.02]"
-          >
-            Send inquiry
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
-        </form>
+    <section className="bg-cream py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <CtaBand
+          title="Let's Build Something Sustainable, Together."
+          body="Whether you need standard copper and brass products or a customized solution for your industry, our team is ready to help."
+          buttons={[
+            { label: "Contact Us", to: "/contact", primary: true },
+            { label: "View Product Catalogue", to: "/products" },
+          ]}
+        />
       </div>
     </section>
-  );
-}
-
-function Field({
-  label,
-  type = "text",
-  textarea,
-}: {
-  label: string;
-  type?: string;
-  textarea?: boolean;
-}) {
-  return (
-    <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-[0.2em] text-cream/60">{label}</span>
-      {textarea ? (
-        <textarea
-          rows={3}
-          className="w-full rounded-lg border border-cream/20 bg-transparent px-4 py-3 text-sm text-cream placeholder:text-cream/30 focus:border-accent focus:outline-none"
-        />
-      ) : (
-        <input
-          type={type}
-          className="w-full rounded-lg border border-cream/20 bg-transparent px-4 py-3 text-sm text-cream placeholder:text-cream/30 focus:border-accent focus:outline-none"
-        />
-      )}
-    </label>
-  );
-}
-
-function Footer() {
-  const ref = useScrollFade<HTMLDivElement>({ y: 40, duration: 0.9, start: "top 95%" });
-  return (
-    <footer ref={ref} className="bg-ink pb-10 pt-16 text-cream/70">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-10 border-b border-cream/10 pb-14 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 text-cream">
-              <div className="grid h-9 w-9 place-items-center rounded-md border border-cream/40">
-                <span className="font-display text-lg italic">L</span>
-              </div>
-              <span className="font-display text-lg">Lifecycle Services</span>
-            </div>
-            <p className="mt-4 max-w-sm text-sm">
-              A world without waste — creating circular value for businesses, OEMs, and data centers.
-            </p>
-          </div>
-          {[
-            { h: "Services", l: ["Data Center", "Business", "OEMs", "Recycling"] },
-            { h: "Company", l: ["About", "Locations", "Resources", "Contact"] },
-          ].map((col) => (
-            <div key={col.h}>
-              <div className="mb-4 text-xs uppercase tracking-[0.25em] text-cream">{col.h}</div>
-              <ul className="space-y-2 text-sm">
-                {col.l.map((i) => (
-                  <li key={i}>
-                    <a className="link-underline" href="#">
-                      {i}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8 flex flex-col justify-between gap-4 text-xs text-cream/50 md:flex-row">
-          <p>© {new Date().getFullYear()} Lifecycle Services. All rights reserved.</p>
-          <p>Privacy · Terms · Cookies</p>
-        </div>
-      </div>
-    </footer>
   );
 }
 
 function Home() {
   return (
     <main className="bg-cream">
-      <Nav />
       <Hero />
       <ScrollPanels />
       <About />
@@ -851,8 +537,7 @@ function Home() {
       <Capabilities />
       <GlobalCoverage />
       <Certifications />
-      <Contact />
-      <Footer />
+      <FinalCta />
     </main>
   );
 }
