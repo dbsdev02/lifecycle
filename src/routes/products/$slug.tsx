@@ -97,7 +97,7 @@ function ProductDetailPage() {
       </section>
 
       {related.length > 0 && (
-        <section className="bg-[#f5f5f5] py-24 md:py-32">
+        <section className="bg-[#f3ece3] py-24 md:py-32">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Related</p>
             <h2 className="mt-4 font-display text-3xl leading-[1.15] text-ink md:text-4xl">

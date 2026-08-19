@@ -119,7 +119,7 @@ function IndustriesPage() {
         </div>
       </section>
 
-      <section className="bg-[#f5f5f5] pb-24 md:pb-32">
+      <section className="bg-[#f3ece3] pb-24 md:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <CtaBand
             title="Don't See Your Industry?"

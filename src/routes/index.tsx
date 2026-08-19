@@ -72,7 +72,7 @@ function Hero() {
         className="absolute left-16 top-32 hidden h-40 w-40 opacity-40 md:block"
         style={{
           backgroundImage:
-            "radial-gradient(circle, #2d41d3 1px, transparent 1px)",
+            "radial-gradient(circle, oklch(0.58 0.12 48) 1px, transparent 1px)",
           backgroundSize: "14px 14px",
         }}
       />
@@ -152,7 +152,7 @@ const panels = [
     body: "An integrated value chain — recycling, refining, processing and manufacturing — gives us greater control over the quality, purity, consistency and traceability of everything we make.",
     cta: "Discover Our Technology",
     to: "/technologies",
-    bg: "#2d41d3",
+    bg: "#b26235",
     fg: "text-cream",
     img: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop",
     imgAlt: "Scrap metal being processed at a recycling yard",

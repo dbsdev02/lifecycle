@@ -128,7 +128,7 @@ function ContactPage() {
         </div>
       </section>
 
-      <section className="bg-[#f5f5f5] py-16">
+      <section className="bg-[#f3ece3] py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>

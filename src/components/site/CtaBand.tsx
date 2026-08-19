@@ -12,7 +12,7 @@ export function CtaBand({
   buttons: { label: string; to: string; primary?: boolean }[];
 }) {
   return (
-    <div className="rounded-3xl bg-gradient-to-br from-accent to-[#001ab3] px-8 py-14 text-center text-cream md:px-16 md:py-20">
+    <div className="rounded-3xl bg-gradient-to-br from-accent to-[#8a4423] px-8 py-14 text-center text-cream md:px-16 md:py-20">
       <h2 className="font-display text-4xl leading-[1.05] md:text-5xl">{title}</h2>
       <p className="mx-auto mt-5 max-w-xl text-cream/85">{body}</p>
       <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
