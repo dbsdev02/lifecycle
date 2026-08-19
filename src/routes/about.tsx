@@ -186,7 +186,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-[#f3ece3] py-24 md:py-32">
+      <section className="bg-[#f5f5f5] py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center">
             <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Values</p>

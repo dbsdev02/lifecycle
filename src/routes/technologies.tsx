@@ -81,7 +81,7 @@ function TechnologiesPage() {
         </div>
       </section>
 
-      <section className="bg-[#f3ece3] py-24 md:py-32">
+      <section className="bg-[#f5f5f5] py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="grid gap-6 md:grid-cols-2">
             {cards.map(({ icon: Icon, title, body, notice }) => (

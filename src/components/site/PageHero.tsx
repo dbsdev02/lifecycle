@@ -34,7 +34,7 @@ export function PageHero({
           aria-hidden
           className="absolute right-0 top-0 h-full w-1/2 opacity-30"
           style={{
-            backgroundImage: "radial-gradient(circle, oklch(0.58 0.12 48) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(circle, #2d41d3 1px, transparent 1px)",
             backgroundSize: "16px 16px",
             maskImage: "linear-gradient(to left, black, transparent)",
           }}

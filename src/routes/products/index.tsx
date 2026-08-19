@@ -72,7 +72,7 @@ function ProductsPage() {
         </div>
       </section>
 
-      <section id="brass" className="bg-[#f3ece3] py-24 md:py-32">
+      <section id="brass" className="bg-[#f5f5f5] py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Brass Products</p>
           <SplitReveal as="h2" className="mt-4 max-w-2xl font-display text-4xl leading-[1.1] md:text-5xl">

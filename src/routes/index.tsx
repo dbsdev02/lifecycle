@@ -9,7 +9,6 @@ import {
   Workflow,
   Factory,
   Layers,
-  MapPin,
 } from "lucide-react";
 import { gsap, prefersReducedMotion } from "@/lib/scroll";
 import { useRotator, SplitReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
@@ -73,7 +72,7 @@ function Hero() {
         className="absolute left-16 top-32 hidden h-40 w-40 opacity-40 md:block"
         style={{
           backgroundImage:
-            "radial-gradient(circle, oklch(0.58 0.12 48) 1px, transparent 1px)",
+            "radial-gradient(circle, #2d41d3 1px, transparent 1px)",
           backgroundSize: "14px 14px",
         }}
       />
@@ -153,7 +152,7 @@ const panels = [
     body: "An integrated value chain — recycling, refining, processing and manufacturing — gives us greater control over the quality, purity, consistency and traceability of everything we make.",
     cta: "Discover Our Technology",
     to: "/technologies",
-    bg: "#b26235",
+    bg: "#2d41d3",
     fg: "text-cream",
     img: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop",
     imgAlt: "Scrap metal being processed at a recycling yard",
@@ -421,60 +420,6 @@ function Capabilities() {
   );
 }
 
-const regions = [
-  { name: "Corporate Office", cities: "803, DLH Park, S.V. Road, Goregaon West, Mumbai – 400104" },
-  { name: "Factory", cities: "Plot No. 35 & 36, Vitthal Industrial Complex, Aamgoan–Sanjan Road, Dongari, Talasari, District Palghar, Maharashtra – 401606" },
-];
-
-function GlobalCoverage() {
-  const regionsRef = useScrollFade<HTMLDivElement>({ children: true, stagger: 0.12, y: 24 });
-  return (
-    <section id="locations" className="relative overflow-hidden bg-cream py-28 md:py-36">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Locations</p>
-            <SplitReveal as="h2" className="mt-6 font-display text-5xl leading-[1.05] md:text-6xl">
-              Two sites, <br />
-              <span className="italic text-accent">one continuous chain.</span>
-            </SplitReveal>
-            <p className="mt-6 max-w-lg text-ink-soft">
-              Our corporate office and manufacturing factory work as a single integrated operation
-              — giving us complete control over quality, purity, consistency and traceability from
-              scrap to finished product.
-            </p>
-            <Link
-              to="/contact"
-              className="mt-10 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm text-cream transition-transform hover:scale-[1.03]"
-            >
-              Get in Touch <ArrowUpRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div ref={regionsRef} className="space-y-3">
-            {regions.map((r, i) => (
-              <details
-                key={r.name}
-                className="group rounded-2xl border border-ink/10 bg-white p-6 transition-all open:bg-ink open:text-cream"
-                open={i === 0}
-              >
-                <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
-                  <div className="flex items-center gap-4">
-                    <MapPin className="h-5 w-5 text-accent" />
-                    <span className="font-display text-2xl">{r.name}</span>
-                  </div>
-                  <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-                </summary>
-                <p className="mt-4 pl-9 text-sm opacity-80">{r.cities}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 const certs = ["ISO 9001:2015", "ISO 14001:2015", "ISO 45001:2018"];
 
 function Certifications() {
@@ -527,7 +472,6 @@ function Home() {
       <About />
       <Impact />
       <Capabilities />
-      <GlobalCoverage />
       <Certifications />
       <FinalCta />
     </main>
