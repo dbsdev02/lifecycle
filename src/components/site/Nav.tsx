@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Globe, ChevronDown } from "lucide-react";
+import svgLogo from "@/assets/svg-blacklogo.jpeg";
 
 const links = [
   { label: "Home", to: "/" },
   { label: "About Us", to: "/about" },
   { label: "Products", to: "/products" },
-  { label: "Technologies", to: "/technologies" },
+  { label: "Infrastructure", to: "/technologies" },
   { label: "Industries", to: "/industries" },
   { label: "SVG Greentec", to: "/greentec" },
   { label: "Investors", to: "/investors" },
@@ -29,8 +30,12 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="font-display text-lg tracking-tight text-white mix-blend-difference">
-          SVG Metals
+        <Link to="/" className="flex items-center">
+          <img
+            src={svgLogo}
+            alt="SVG Metals Upcycling"
+            className="h-14 w-auto sm:h-16"
+          />
         </Link>
 
         <nav

@@ -37,7 +37,6 @@ function Hero() {
   const word = useRotator(rotatingWords);
   const sectionRef = useRef<HTMLElement | null>(null);
   const bgRef = useRef<HTMLDivElement | null>(null);
-  const overlayRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
@@ -47,7 +46,6 @@ function Hero() {
       scrollTrigger: { trigger: section, start: "top top", end: "bottom top", scrub: true },
     });
     tl.to(bgRef.current, { yPercent: 20, scale: 1.15, ease: "none" }, 0)
-      .to(overlayRef.current, { opacity: 0.15, ease: "none" }, 0)
       .to(contentRef.current, { yPercent: -35, opacity: 0.2, ease: "none" }, 0);
     return () => {
       tl.scrollTrigger?.kill();
@@ -68,13 +66,7 @@ function Hero() {
           className="h-full w-full object-cover opacity-90 animate-ken-burns"
         />
       </div>
-      {/* Angled overlay panel like reference */}
-      <div
-        ref={overlayRef}
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent"
-      />
-
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/40 via-ink/5 to-transparent" />
       {/* Dot pattern */}
       <div
         aria-hidden
@@ -150,7 +142,7 @@ const panels = [
     body: "From raw scrap to precision-engineered finished products, we manufacture a comprehensive range of copper and brass products for power, electrical, automotive, construction and industrial applications.",
     cta: "View Our Products",
     to: "/products",
-    bg: "#1b0702",
+    bg: "#000000",
     fg: "text-cream",
     img: "https://images.unsplash.com/photo-1678119895596-411628b1f6be?w=1600&q=80&auto=format&fit=crop",
     imgAlt: "Braided high-purity copper cable",

@@ -7,9 +7,15 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
+const factoryAddress =
+  "Plot No. 35 & 36, Vitthal Industrial Complex, Aamgoan–Sanjan Road, Dongari, Talasari, District Palghar, Maharashtra – 401606";
+// Free-text geocoding of the full address is ambiguous (matches an unrelated "Amgaon" near
+// Nagpur too), so the map is centered on Talasari town's coordinates instead.
+const factoryCoords = "20.122926,72.916403";
+
 const info = [
   { k: "Corporate Office", v: "803, DLH Park, S.V. Road, Goregaon West, Mumbai – 400104" },
-  { k: "Factory Address", v: "Plot No. 35 & 36, Vitthal Industrial Complex, Aamgoan–Sanjan Road, Dongari, Talasari, District Palghar, Maharashtra – 401606" },
+  { k: "Factory Address", v: factoryAddress },
   { k: "Phone", v: "[[client to supply]]" },
   { k: "WhatsApp", v: "[[client to supply]]" },
   { k: "Email", v: "info@svgmetals.com" },
@@ -124,9 +130,29 @@ function ContactPage() {
 
       <section className="bg-[#f3ece3] py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-ink/10 bg-white text-ink-soft">
-            <MapPin className="h-8 w-8 text-accent" />
-            <span className="text-sm">Google Maps embed to be added — Corporate Office &amp; Factory locations</span>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Factory Location</p>
+              <h3 className="mt-2 font-display text-2xl text-ink">{factoryAddress}</h3>
+            </div>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${factoryCoords}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-5 py-2.5 text-sm text-ink transition-colors hover:bg-ink hover:text-cream"
+            >
+              <MapPin className="h-4 w-4" /> Get Directions
+            </a>
+          </div>
+          <div className="mt-6 overflow-hidden rounded-2xl border border-ink/10">
+            <iframe
+              title="SVG Metals Factory Location"
+              src={`https://www.google.com/maps?q=${factoryCoords}&z=13&output=embed`}
+              className="h-96 w-full"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </div>
       </section>

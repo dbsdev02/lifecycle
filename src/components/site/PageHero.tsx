@@ -25,9 +25,9 @@ export function PageHero({
             src={image}
             alt={imageAlt ?? ""}
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover opacity-45"
+            className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/45 via-ink/25 to-transparent" />
         </>
       ) : (
         <div
