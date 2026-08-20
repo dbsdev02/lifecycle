@@ -26,14 +26,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const rotatingWords = [
-  "Sustainable",
-  "Integrated",
-  "High-Purity",
-  "Circular",
-  "Resourceful",
-  "Innovative",
-];
+const rotatingWords = ["Reduce", "Reuse", "Recycle"];
 
 function Hero() {
   const word = useRotator(rotatingWords);
@@ -94,7 +87,7 @@ function Hero() {
           Copper & Non-Ferrous Metals Recycling
         </p>
         <h1 className="font-display text-[13vw] leading-[0.95] text-cream md:text-[8vw]">
-          <span className="block animate-fade-up">Delivering</span>
+          <span className="block animate-fade-up">Built To</span>
           <span className="relative block h-[1.05em] overflow-hidden italic text-cream">
             <span
               key={word}
@@ -108,7 +101,7 @@ function Hero() {
             className="block animate-fade-up"
             style={{ animationDelay: "0.15s" }}
           >
-            Solutions
+            Responsibly
           </span>
         </h1>
 
