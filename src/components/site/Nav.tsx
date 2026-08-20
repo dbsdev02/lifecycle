@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Globe, ChevronDown } from "lucide-react";
-import svgLogo from "@/assets/svg-blacklogo.jpeg";
+import svgLogo from "@/assets/svg-logo-white.png";
 
 const links = [
   { label: "Home", to: "/" },
@@ -15,34 +14,18 @@ const links = [
 ] as const;
 
 export function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-3" : "py-5"
-      }`}
-    >
+    <header className="absolute inset-x-0 top-0 z-50 py-5">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link to="/" className="flex items-center">
           <img
             src={svgLogo}
             alt="SVG Metals Upcycling"
-            className="h-14 w-auto sm:h-16"
+            className="h-16 w-auto sm:h-20"
           />
         </Link>
 
-        <nav
-          className={`hidden items-center gap-5 rounded-full px-6 py-3 text-sm backdrop-blur-md transition-all lg:flex ${
-            scrolled ? "bg-white/95 text-ink shadow-lg" : "bg-white/80 text-ink"
-          }`}
-        >
+        <nav className="hidden items-center gap-5 rounded-full bg-white/80 px-6 py-3 text-sm text-ink backdrop-blur-md lg:flex">
           {links.map((l) => (
             <Link
               key={l.to}

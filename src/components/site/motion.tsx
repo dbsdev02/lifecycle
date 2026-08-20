@@ -66,6 +66,64 @@ export function SplitReveal({
   );
 }
 
+/**
+ * Splits text and scrubs each word's color from a dim tone to a full color
+ * as the element scrolls through the viewport (color tied to scroll position,
+ * not just on/off — scrolling back up reverses it).
+ */
+export function ScrollColorReveal({
+  as: Tag = "p",
+  children,
+  className,
+  from = "rgba(249, 244, 240, 0.25)",
+  to = "#f9f4f0",
+  start = "top 90%",
+  end = "bottom 55%",
+  by = "words",
+}: {
+  as?: "h1" | "h2" | "h3" | "p";
+  children: ReactNode;
+  className?: string;
+  from?: string;
+  to?: string;
+  start?: string;
+  end?: string;
+  by?: "words" | "lines";
+}) {
+  const ref = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (prefersReducedMotion()) return;
+
+    const split =
+      by === "lines"
+        ? new SplitText(el, { type: "lines", linesClass: "split-word" })
+        : new SplitText(el, { type: "words", wordsClass: "split-word" });
+    const targets = by === "lines" ? split.lines : split.words;
+
+    gsap.set(targets, { color: from });
+    const tween = gsap.to(targets, {
+      color: to,
+      stagger: 0.05,
+      ease: "none",
+      scrollTrigger: { trigger: el, start, end, scrub: 0.6 },
+    });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+      split.revert();
+    };
+  }, [from, to, start, end, by]);
+
+  return (
+    <Tag ref={ref as never} className={className}>
+      {children}
+    </Tag>
+  );
+}
+
 export function useScrollFade<T extends HTMLElement>(opts?: {
   y?: number;
   scale?: number;

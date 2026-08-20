@@ -10,6 +10,7 @@ import Lenis from "lenis";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/scroll";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
+import { BackToTop } from "@/components/site/BackToTop";
 
 function useSmoothScroll() {
   useEffect(() => {
@@ -104,6 +105,7 @@ function RootComponent() {
       <Nav />
       <Outlet />
       <Footer />
+      <BackToTop />
     </QueryClientProvider>
   );
 }

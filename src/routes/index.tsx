@@ -11,7 +11,7 @@ import {
   Layers,
 } from "lucide-react";
 import { gsap, prefersReducedMotion } from "@/lib/scroll";
-import { useRotator, SplitReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
+import { useRotator, SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/CtaBand";
 
 // welding / factory-sparks industrial images
@@ -304,14 +304,26 @@ function About() {
           </div>
         </div>
         <div className="lg:col-span-8">
-          <SplitReveal as="h2" className="font-display text-4xl leading-[1.1] md:text-6xl">
+          <ScrollColorReveal
+            as="h2"
+            className="font-display text-4xl leading-[1.1] md:text-6xl"
+            from="rgba(249, 244, 240, 0.2)"
+            to="#f9f4f0"
+          >
             Since 1978, we&rsquo;ve grown from the Nakoda Group of Companies into an integrated
             copper and non-ferrous metals recycling and manufacturing company &mdash; transforming
             scrap into high-quality industrial products, entirely under one roof.
-          </SplitReveal>
-          <p className="mt-10 max-w-2xl font-display text-2xl italic text-cream/80 md:text-3xl">
+          </ScrollColorReveal>
+          <ScrollColorReveal
+            as="p"
+            className="mt-10 max-w-2xl font-display text-2xl italic md:text-3xl"
+            from="rgba(249, 244, 240, 0.2)"
+            to="#b26235"
+            start="top 85%"
+            end="bottom 65%"
+          >
             We don&rsquo;t just recycle metal. We transform it.
-          </p>
+          </ScrollColorReveal>
           <Link
             to="/about"
             className="mt-10 inline-flex items-center gap-2 rounded-full border border-cream/40 px-6 py-3 text-sm transition-colors hover:bg-cream hover:text-ink"
@@ -392,26 +404,26 @@ const capabilities = [
 function Capabilities() {
   const gridRef = useScrollFade<HTMLDivElement>({ children: true, stagger: 0.15, y: 20, scale: 0.95 });
   return (
-    <section className="bg-ink py-28 text-cream md:py-36">
+    <section className="bg-[#e8dcc9] py-28 text-ink md:py-36">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <p className="text-xs uppercase tracking-[0.3em] text-cream/60">Capabilities</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-ink/60">Capabilities</p>
         <SplitReveal as="h2" className="mt-6 max-w-3xl font-display text-5xl leading-[1.05] md:text-6xl">
           Every step of the <span className="italic">value chain,</span> under one roof.
         </SplitReveal>
 
         <div
           ref={gridRef}
-          className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-cream/10 bg-cream/10 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3"
         >
           {capabilities.map(({ icon: Icon, title, body }) => (
             <div
               key={title}
-              className="group relative bg-ink p-8 transition-colors duration-500 hover:bg-[color-mix(in_oklab,var(--accent)_15%,var(--ink))]"
+              className="group relative bg-[#e8dcc9] p-8 transition-colors duration-500 hover:bg-[color-mix(in_oklab,var(--accent)_15%,#e8dcc9)]"
             >
               <Icon className="h-8 w-8 text-accent transition-transform duration-500 group-hover:-translate-y-1" />
               <h3 className="mt-6 font-display text-2xl">{title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-cream/70">{body}</p>
-              <ArrowUpRight className="absolute right-6 top-6 h-5 w-5 text-cream/40 transition-all group-hover:text-accent group-hover:rotate-45" />
+              <p className="mt-3 text-sm leading-relaxed text-ink/70">{body}</p>
+              <ArrowUpRight className="absolute right-6 top-6 h-5 w-5 text-ink/40 transition-all group-hover:text-accent group-hover:rotate-45" />
             </div>
           ))}
         </div>

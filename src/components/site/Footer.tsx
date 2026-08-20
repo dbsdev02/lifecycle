@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useScrollFade } from "@/components/site/motion";
-import svgLogo from "@/assets/svg-blacklogo.jpeg";
+import svgLogo from "@/assets/svg-logo-white.png";
 
 const columns = [
   {
@@ -34,7 +34,7 @@ export function Footer() {
               <img
                 src={svgLogo}
                 alt="SVG Metals Upcycling"
-                className="h-16 w-auto sm:h-20"
+                className="h-20 w-auto sm:h-24"
               />
             </Link>
             <p className="mt-4 max-w-sm text-sm">
