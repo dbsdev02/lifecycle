@@ -9,14 +9,17 @@ import {
   Workflow,
   Factory,
   Layers,
+  BadgeCheck,
 } from "lucide-react";
 import { gsap, prefersReducedMotion } from "@/lib/scroll";
 import { useRotator, SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/CtaBand";
+import hero1 from "@/assets/hero-1.jpeg";
+import hero2 from "@/assets/hero-2.jpeg";
 
 // welding / factory-sparks industrial images
 
-const heroImg    = "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1600&q=90&auto=format&fit=crop";
+const heroImg    = hero1;
 const aboutImg   = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&auto=format&fit=crop";
 
 export const Route = createFileRoute("/")({
@@ -66,6 +69,11 @@ function Hero() {
         />
       </div>
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/40 via-ink/5 to-transparent" />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(90deg, #000000 0%, #000000cc 35%, #00000000 60%)" }}
+      />
       {/* Dot pattern */}
       <div
         aria-hidden
@@ -141,10 +149,10 @@ const panels = [
     body: "From raw scrap to precision-engineered finished products, we manufacture a comprehensive range of copper and brass products for power, electrical, automotive, construction and industrial applications.",
     cta: "View Our Products",
     to: "/products",
-    bg: "#000000",
+    bg: "#ba5524",
     fg: "text-cream",
-    img: "https://images.unsplash.com/photo-1678119895596-411628b1f6be?w=1600&q=80&auto=format&fit=crop",
-    imgAlt: "Braided high-purity copper cable",
+    img: hero2,
+    imgAlt: "Copper cathodes being processed in the manufacturing facility",
   },
   {
     tag: "02 — Technologies",
@@ -152,7 +160,7 @@ const panels = [
     body: "An integrated value chain — recycling, refining, processing and manufacturing — gives us greater control over the quality, purity, consistency and traceability of everything we make.",
     cta: "Discover Our Technology",
     to: "/technologies",
-    bg: "#b26235",
+    bg: "#b76333",
     fg: "text-cream",
     img: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop",
     imgAlt: "Scrap metal being processed at a recycling yard",
@@ -232,7 +240,7 @@ function ScrollPanels() {
             />
             <div
               className="absolute inset-0"
-              style={{ background: `linear-gradient(90deg, ${p.bg} 0%, ${p.bg}e6 45%, ${p.bg}00 90%)` }}
+              style={{ background: `linear-gradient(90deg, ${p.bg} 0%, ${p.bg}e6 35%, ${p.bg}00 60%)` }}
             />
             <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6">
               <div className="max-w-2xl">
@@ -295,7 +303,7 @@ function ScrollPanels() {
 
 function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-ink py-28 text-cream md:py-40">
+    <section id="about" className="relative overflow-hidden bg-[#8e401a] py-28 text-cream md:py-40">
       <div className="mx-auto grid max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="text-xs uppercase tracking-[0.3em] text-cream/60">About Us</p>
@@ -447,8 +455,9 @@ function Certifications() {
             {[...certs, ...certs, ...certs].map((c, i) => (
               <div
                 key={i}
-                className="flex h-16 min-w-[160px] items-center justify-center rounded-lg border border-ink/10 bg-white px-6 font-display text-xl text-ink-soft"
+                className="flex h-16 min-w-[200px] items-center justify-center gap-2.5 rounded-lg border border-ink/10 bg-white px-6 font-display text-xl text-ink-soft"
               >
+                <BadgeCheck className="h-5 w-5 shrink-0 text-accent" />
                 {c}
               </div>
             ))}

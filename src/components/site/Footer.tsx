@@ -26,7 +26,7 @@ const columns = [
 export function Footer() {
   const ref = useScrollFade<HTMLDivElement>({ y: 40, duration: 0.9, start: "top 95%" });
   return (
-    <footer ref={ref} className="bg-ink pb-10 pt-16 text-cream/70">
+    <footer ref={ref} className="bg-[#8E401A] pb-10 pt-16 text-cream/70">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 border-b border-cream/10 pb-14 md:grid-cols-4">
             <div className="md:col-span-2">
