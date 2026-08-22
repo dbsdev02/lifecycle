@@ -154,7 +154,7 @@ const panels = [
     cta: "Discover Our Technology",
     to: "/technologies",
     bg: "#dcb582",
-    fg: "text-cream",
+    fg: "text-black",
     img: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop",
     imgAlt: "Scrap metal being processed at a recycling yard",
   },
