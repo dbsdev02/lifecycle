@@ -153,7 +153,7 @@ const panels = [
     body: "An integrated value chain — recycling, refining, processing and manufacturing — gives us greater control over the quality, purity, consistency and traceability of everything we make.",
     cta: "Discover Our Technology",
     to: "/technologies",
-    bg: "#b76333",
+    bg: "#dcb582",
     fg: "text-cream",
     img: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop",
     imgAlt: "Scrap metal being processed at a recycling yard",

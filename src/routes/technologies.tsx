@@ -61,11 +61,11 @@ function TechnologiesPage() {
 
       <section className="py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
-          <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Biggest Strength</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-black">Our Biggest Strength</p>
           <SplitReveal as="h2" className="mx-auto mt-4 max-w-3xl font-display text-4xl leading-[1.1] md:text-5xl">
             Integrated Value Chain
           </SplitReveal>
-          <p className="mx-auto mt-5 max-w-3xl text-ink-soft">
+          <p className="mx-auto mt-5 max-w-3xl text-black">
             Our journey begins with metal scrap, which we recycle, recover and refine to produce
             high-quality raw material — giving us greater control over the quality, purity,
             consistency and traceability of our inputs. We then take this recycled metal through our
@@ -73,7 +73,7 @@ function TechnologiesPage() {
             products.
           </p>
           <Chain />
-          <p className="mx-auto mt-10 max-w-2xl text-ink-soft">
+          <p className="mx-auto mt-10 max-w-2xl text-black">
             This integrated approach gives us greater control over quality, efficiency and
             consistency, while enabling customized solutions and greater value creation at every
             stage.
@@ -88,7 +88,7 @@ function TechnologiesPage() {
               <div key={title} className="rounded-2xl border border-ink/10 bg-white p-8">
                 <Icon className="h-8 w-8 text-accent" />
                 <h3 className="mt-5 font-display text-2xl text-ink">{title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-soft">{body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-black">{body}</p>
                 <div className="mt-5">
                   <Notice>{notice}</Notice>
                 </div>
@@ -97,7 +97,7 @@ function TechnologiesPage() {
             <div className="rounded-2xl border border-ink/10 bg-white p-8">
               <Award className="h-8 w-8 text-accent" />
               <h3 className="mt-5 font-display text-2xl text-ink">Certifications</h3>
-              <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+              <p className="mt-3 text-sm leading-relaxed text-black">
                 Our operations are supported by internationally recognized certified systems,
                 reflecting our commitment to quality, environmental responsibility and occupational
                 health &amp; safety.
