@@ -18,6 +18,7 @@ import hero1 from "@/assets/hero-1.jpeg";
 import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
 import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
 import furnaceImg from "@/assets/svg-furnace.jpg";
+import copperRodsImg from "@/assets/svg-copper-rods.jpg";
 
 const heroImg    = hero1;
 const aboutImg   = wireCoilsImg;
@@ -164,10 +165,10 @@ const panels = [
     body: "From the power grid to the vehicles on the road, from renewable energy installations to hospital gas lines — our copper and brass products serve the industries building tomorrow.",
     cta: "See How We Serve You",
     to: "/industries",
-    bg: "#f9f4f0",
+    bg: "#f2d8c4",
     fg: "text-ink",
-    img: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1600&q=80&auto=format&fit=crop",
-    imgAlt: "High-voltage power transmission lines at sunset",
+    img: copperRodsImg,
+    imgAlt: "Freshly cast high-purity copper rods",
   },
 ];
 
