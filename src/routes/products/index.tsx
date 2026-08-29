@@ -5,7 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Notice } from "@/components/site/Notice";
 import { CtaBand } from "@/components/site/CtaBand";
 import { products, type Product } from "@/data/products";
-import copperRodsImg from "@/assets/SVG Image (5).png";
+import copperRodsImg from "@/assets/svg-copper-rods.jpg";
 
 export const Route = createFileRoute("/products/")({
   component: ProductsPage,

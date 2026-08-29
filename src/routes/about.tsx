@@ -12,9 +12,9 @@ import {
 import { SplitReveal, useScrollFade } from "@/components/site/motion";
 import { PageHero } from "@/components/site/PageHero";
 import { Notice } from "@/components/site/Notice";
-import facilityImg from "@/assets/SVG Image (1).png";
-import leaderPhoto1 from "@/assets/SVG Image (3).png";
-import leaderPhoto2 from "@/assets/SVG Image (4).png";
+import facilityImg from "@/assets/svg-facility.jpg";
+import leaderPhoto1 from "@/assets/svg-leader-1.jpg";
+import leaderPhoto2 from "@/assets/svg-leader-2.jpg";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,

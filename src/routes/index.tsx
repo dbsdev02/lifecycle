@@ -15,9 +15,9 @@ import { gsap, prefersReducedMotion } from "@/lib/scroll";
 import { useRotator, SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/CtaBand";
 import hero1 from "@/assets/hero-1.jpeg";
-import hero2 from "@/assets/hero-2.jpeg";
-import wireCoilsImg from "@/assets/SVG Image (7).png";
-import copperTurningsImg from "@/assets/SVG Image (6).png";
+import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
+import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
+import furnaceImg from "@/assets/svg-furnace.jpg";
 
 const heroImg    = hero1;
 const aboutImg   = wireCoilsImg;
@@ -142,10 +142,10 @@ const panels = [
     body: "From raw scrap to precision-engineered finished products, we manufacture a comprehensive range of copper and brass products for power, electrical, automotive, construction and industrial applications.",
     cta: "View Our Products",
     to: "/products",
-    bg: "#ba5524",
-    fg: "text-cream",
-    img: hero2,
-    imgAlt: "Copper cathodes being processed in the manufacturing facility",
+    bg: "#cfb4a4",
+    fg: "text-black",
+    img: furnaceImg,
+    imgAlt: "Molten copper glowing inside a melting furnace",
   },
   {
     tag: "02 — Technologies",
