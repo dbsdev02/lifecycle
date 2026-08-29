@@ -3,6 +3,7 @@ import { Recycle, Factory, ShieldCheck, Award } from "lucide-react";
 import { SplitReveal, useScrollFade } from "@/components/site/motion";
 import { PageHero } from "@/components/site/PageHero";
 import { Notice } from "@/components/site/Notice";
+import furnaceImg from "@/assets/SVG Image (2).png";
 
 export const Route = createFileRoute("/technologies")({
   component: TechnologiesPage,
@@ -55,8 +56,8 @@ function TechnologiesPage() {
         eyebrow="Technologies"
         title="Everything Under One Roof — From Scrap to Finished Product."
         lead="Our technology and processes are what set SVG Metals apart: an integrated system that takes metal from scrap to finished product without ever leaving our control."
-        image="https://images.unsplash.com/photo-1624027492684-327af1fb7559?w=1600&q=80&auto=format&fit=crop"
-        imageAlt="Industrial factory interior with overhead crane"
+        image={furnaceImg}
+        imageAlt="Molten copper glowing inside a melting furnace"
       />
 
       <section className="py-24 md:py-32">

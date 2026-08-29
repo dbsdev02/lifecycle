@@ -16,11 +16,11 @@ import { useRotator, SplitReveal, ScrollColorReveal, useScrollFade, RevealImage,
 import { CtaBand } from "@/components/site/CtaBand";
 import hero1 from "@/assets/hero-1.jpeg";
 import hero2 from "@/assets/hero-2.jpeg";
-
-// welding / factory-sparks industrial images
+import wireCoilsImg from "@/assets/SVG Image (7).png";
+import copperTurningsImg from "@/assets/SVG Image (6).png";
 
 const heroImg    = hero1;
-const aboutImg   = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&auto=format&fit=crop";
+const aboutImg   = wireCoilsImg;
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -155,8 +155,8 @@ const panels = [
     to: "/technologies",
     bg: "#dcb582",
     fg: "text-black",
-    img: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop",
-    imgAlt: "Scrap metal being processed at a recycling yard",
+    img: copperTurningsImg,
+    imgAlt: "Close-up of recycled copper turnings",
   },
   {
     tag: "03 — Industries",
@@ -301,7 +301,7 @@ function About() {
         <div className="lg:col-span-4">
           <p className="text-xs uppercase tracking-[0.3em] text-cream/60">About Us</p>
           <div className="mt-10 aspect-[4/5] overflow-hidden rounded-2xl">
-            <RevealImage src={aboutImg} alt="SVG Metals manufacturing facility" className="h-full w-full object-cover" />
+            <RevealImage src={aboutImg} alt="Recovered copper wire coils ready for processing" className="h-full w-full object-cover" />
           </div>
         </div>
         <div className="lg:col-span-8">

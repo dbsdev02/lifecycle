@@ -5,6 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Notice } from "@/components/site/Notice";
 import { CtaBand } from "@/components/site/CtaBand";
 import { products, type Product } from "@/data/products";
+import copperRodsImg from "@/assets/SVG Image (5).png";
 
 export const Route = createFileRoute("/products/")({
   component: ProductsPage,
@@ -54,8 +55,8 @@ function ProductsPage() {
         eyebrow="Products"
         title="Copper & Brass Products, Manufactured for Industry."
         lead="From raw scrap to precision-engineered finished products, SVG Metals manufactures a comprehensive range of copper and brass products for industrial applications across power, electrical, automotive, construction, energy and engineering sectors."
-        image="https://plus.unsplash.com/premium_photo-1746430499149-4e744be8ac2f?w=1600&q=80&auto=format&fit=crop"
-        imageAlt="Woven copper metal texture"
+        image={copperRodsImg}
+        imageAlt="Freshly cast high-purity copper rods"
       />
 
       <section id="copper" className="py-24 md:py-32">

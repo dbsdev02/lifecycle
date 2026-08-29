@@ -12,6 +12,9 @@ import {
 import { SplitReveal, useScrollFade } from "@/components/site/motion";
 import { PageHero } from "@/components/site/PageHero";
 import { Notice } from "@/components/site/Notice";
+import facilityImg from "@/assets/SVG Image (1).png";
+import leaderPhoto1 from "@/assets/SVG Image (3).png";
+import leaderPhoto2 from "@/assets/SVG Image (4).png";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
@@ -38,12 +41,14 @@ const timeline = [
 const leadership = [
   {
     initials: "PJ",
+    photo: leaderPhoto1,
     name: "Pyarchand B. Jain",
     role: "Chairman",
     body: "Founder of the Nakoda Group of Companies, established in 1978 on a foundation of integrity, craftsmanship and quality.",
   },
   {
     initials: "MJ",
+    photo: leaderPhoto2,
     name: "Manish Jain",
     role: "Managing Director",
     body: "Carries forward the group's legacy, combining decades of industry values with a forward-looking approach.",
@@ -94,8 +99,8 @@ function AboutPage() {
         eyebrow="About Us"
         title="A Legacy of Integrity, Craftsmanship and Quality Since 1978."
         lead="From the founding of the Nakoda Group of Companies to the evolution of SVG Metals Upcycling Limited, our story is one of steady growth built on values that never change."
-        image="https://images.unsplash.com/photo-1698664683348-f9f35b809821?w=1600&q=80&auto=format&fit=crop"
-        imageAlt="Welder working on metal fabrication"
+        image={facilityImg}
+        imageAlt="Workers and machinery at the SVG Metals scrap yard"
       />
 
       <section className="py-24 md:py-32">
@@ -174,9 +179,18 @@ function AboutPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {leadership.map((p) => (
               <div key={p.name} className="rounded-2xl border border-ink/10 bg-white p-7">
-                <div className="grid h-14 w-14 place-items-center rounded-full bg-ink font-display text-lg text-cream">
-                  {p.initials}
-                </div>
+                {p.photo ? (
+                  <img
+                    src={p.photo}
+                    alt={p.name}
+                    loading="lazy"
+                    className="h-14 w-14 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="grid h-14 w-14 place-items-center rounded-full bg-ink font-display text-lg text-cream">
+                    {p.initials}
+                  </div>
+                )}
                 <h4 className="mt-5 font-display text-xl text-ink">{p.name}</h4>
                 <div className="mt-1 text-xs uppercase tracking-[0.2em] text-accent">{p.role}</div>
                 <p className="mt-3 text-sm leading-relaxed text-ink-soft">{p.body}</p>
