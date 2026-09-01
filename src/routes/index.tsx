@@ -13,7 +13,7 @@ import {
 import { gsap, prefersReducedMotion } from "@/lib/scroll";
 import { useRotator, SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/CtaBand";
-import hero1 from "@/assets/hero-1.jpeg";
+import hero1 from "@/assets/svg-hero-16-9.jpg";
 import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
 import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
 import furnaceImg from "@/assets/svg-furnace.jpg";
