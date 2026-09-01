@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useScrollFade } from "@/components/site/motion";
-import svgLogo from "@/assets/svg-logo-white.png";
+import svgLogo from "@/assets/svg-logo-website-c.png";
 
 const columns = [
   {
@@ -26,9 +26,9 @@ const columns = [
 export function Footer() {
   const ref = useScrollFade<HTMLDivElement>({ y: 40, duration: 0.9, start: "top 95%" });
   return (
-    <footer ref={ref} className="bg-[#8E401A] pb-10 pt-16 text-cream/70">
+    <footer ref={ref} className="bg-white pb-10 pt-16 text-[#8E401A]/75">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-10 border-b border-cream/10 pb-14 md:grid-cols-4">
+        <div className="grid gap-10 border-b border-[#8E401A]/15 pb-14 md:grid-cols-4">
             <div className="md:col-span-2">
             <Link to="/" className="inline-flex items-center">
               <img
@@ -37,15 +37,15 @@ export function Footer() {
                 className="h-20 w-auto sm:h-24"
               />
             </Link>
-            <p className="mt-4 max-w-sm text-sm">
+            <p className="mt-4 max-w-sm text-base md:text-lg">
               An integrated copper and non-ferrous metals recycling and manufacturing company,
               transforming scrap into high-quality industrial products.
             </p>
           </div>
           {columns.map((col) => (
             <div key={col.h}>
-              <div className="mb-4 text-xs uppercase tracking-[0.25em] text-cream">{col.h}</div>
-              <ul className="space-y-2 text-sm">
+              <div className="mb-4 text-sm uppercase tracking-[0.25em] text-[#8E401A]">{col.h}</div>
+              <ul className="space-y-2.5 text-base md:text-lg">
                 {col.l.map((i) => (
                   <li key={i.label}>
                     <Link className="link-underline" to={i.to}>
@@ -57,7 +57,7 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-8 flex flex-col justify-between gap-4 text-xs text-cream/50 md:flex-row">
+        <div className="mt-8 flex flex-col justify-between gap-4 text-sm text-[#8E401A]/55 md:flex-row">
           <p>© {new Date().getFullYear()} SVG Metals Upcycling Limited. All rights reserved.</p>
           <p>Privacy · Terms · Cookies</p>
         </div>

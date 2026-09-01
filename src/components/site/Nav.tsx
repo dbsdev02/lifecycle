@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Globe, ChevronDown } from "lucide-react";
-import svgLogo from "@/assets/svg-logo-white.png";
+import svgLogo from "@/assets/svg-logo-website-w.png";
 
 const links = [
   { label: "Home", to: "/" },
@@ -21,7 +21,7 @@ export function Nav() {
           <img
             src={svgLogo}
             alt="SVG Metals Upcycling"
-            className="h-16 w-auto sm:h-20"
+            className="h-12 w-auto sm:h-14"
           />
         </Link>
 

@@ -9,7 +9,6 @@ import {
   Workflow,
   Factory,
   Layers,
-  BadgeCheck,
 } from "lucide-react";
 import { gsap, prefersReducedMotion } from "@/lib/scroll";
 import { useRotator, SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
@@ -18,7 +17,8 @@ import hero1 from "@/assets/hero-1.jpeg";
 import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
 import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
 import furnaceImg from "@/assets/svg-furnace.jpg";
-import copperRodsImg from "@/assets/svg-copper-rods.jpg";
+import industriesImg from "@/assets/svg-industries-16-9.jpg";
+import isoBadge from "@/assets/iso-certified.png";
 
 const heroImg    = hero1;
 const aboutImg   = wireCoilsImg;
@@ -134,8 +134,7 @@ function Hero() {
   );
 }
 
-// hex equivalents of --ink/--accent/--cream: GSAP's color tween can't parse
-// var()/oklch(), only hex/rgb/hsl.
+// bg is a plain fallback color shown behind each panel image while it loads.
 const panels = [
   {
     tag: "01 — Products",
@@ -144,9 +143,9 @@ const panels = [
     cta: "View Our Products",
     to: "/products",
     bg: "#cfb4a4",
-    fg: "text-black",
-    img: furnaceImg,
-    imgAlt: "Molten copper glowing inside a melting furnace",
+    fg: "text-white",
+    img: copperTurningsImg,
+    imgAlt: "Close-up of recycled copper turnings",
   },
   {
     tag: "02 — Technologies",
@@ -155,9 +154,9 @@ const panels = [
     cta: "Discover Our Technology",
     to: "/technologies",
     bg: "#dcb582",
-    fg: "text-black",
-    img: copperTurningsImg,
-    imgAlt: "Close-up of recycled copper turnings",
+    fg: "text-white",
+    img: furnaceImg,
+    imgAlt: "Molten copper glowing inside a melting furnace",
   },
   {
     tag: "03 — Industries",
@@ -166,23 +165,21 @@ const panels = [
     cta: "See How We Serve You",
     to: "/industries",
     bg: "#f2d8c4",
-    fg: "text-ink",
-    img: copperRodsImg,
-    imgAlt: "Freshly cast high-purity copper rods",
+    fg: "text-white",
+    img: industriesImg,
+    imgAlt: "High-purity copper cathode sheets lifted at an electrorefining plant",
   },
 ];
 
 function ScrollPanels() {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
   const reduced = prefersReducedMotion();
 
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current;
-    const bg = bgRef.current;
     const contents = contentRefs.current.filter((c): c is HTMLDivElement => c !== null);
-    if (!wrapper || !bg || reduced || contents.length !== panels.length) return;
+    if (!wrapper || reduced || contents.length !== panels.length) return;
 
     // contents[0] stays as rendered (visible, in place); the rest start
     // off-screen below, hidden, and fade in as their predecessor exits.
@@ -201,8 +198,6 @@ function ScrollPanels() {
     });
     contents.slice(1).forEach((el, i) => {
       const pos = i;
-      // background morphs from the outgoing panel's color to the incoming one's.
-      tl.to(bg, { backgroundColor: panels[i + 1].bg, ease: "none", duration: 1 }, pos);
       // outgoing heading slides up and disappears...
       tl.to(contents[i], { y: "-45vh", opacity: 0, ease: "none", duration: 0.5 }, pos);
       tl.set(contents[i], { pointerEvents: "none" }, pos);
@@ -233,8 +228,9 @@ function ScrollPanels() {
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div
+              aria-hidden
               className="absolute inset-0"
-              style={{ background: `linear-gradient(90deg, ${p.bg} 0%, ${p.bg}e6 35%, ${p.bg}00 60%)` }}
+              style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.32) 42%, rgba(0,0,0,0) 72%)" }}
             />
             <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6">
               <div className="max-w-2xl">
@@ -256,8 +252,7 @@ function ScrollPanels() {
   }
 
   return (
-    <section id="products" ref={wrapperRef} className="relative h-screen w-full overflow-hidden">
-      <div ref={bgRef} className="absolute inset-0" style={{ backgroundColor: panels[0].bg }} />
+    <section id="products" ref={wrapperRef} className="relative h-screen w-full overflow-hidden bg-cream">
       {panels.map((p, i) => (
         <div
           key={p.title}
@@ -273,8 +268,9 @@ function ScrollPanels() {
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div
+            aria-hidden
             className="absolute inset-0"
-            style={{ background: `linear-gradient(90deg, ${p.bg} 0%, ${p.bg}e6 45%, ${p.bg}00 90%)` }}
+            style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.32) 42%, rgba(0,0,0,0) 72%)" }}
           />
           <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6">
             <div className="max-w-2xl">
@@ -297,10 +293,10 @@ function ScrollPanels() {
 
 function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-[#8e401a] py-28 text-cream md:py-40">
+    <section id="about" className="relative overflow-hidden bg-white py-28 text-[#8e401a] md:py-40">
       <div className="mx-auto grid max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-cream/60">About Us</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-[#8e401a]/50">About Us</p>
           <div className="mt-10 aspect-[4/5] overflow-hidden rounded-2xl">
             <RevealImage src={aboutImg} alt="Recovered copper wire coils ready for processing" className="h-full w-full object-cover" />
           </div>
@@ -308,9 +304,9 @@ function About() {
         <div className="lg:col-span-8">
           <ScrollColorReveal
             as="h2"
-            className="font-display text-4xl leading-[1.1] md:text-6xl"
-            from="rgba(249, 244, 240, 0.2)"
-            to="#f9f4f0"
+            className="font-display text-4xl leading-[1.1] text-[#8e401a] md:text-6xl"
+            from="rgba(142, 64, 26, 0.15)"
+            to="#8e401a"
           >
             Since 1978, we&rsquo;ve grown from the Nakoda Group of Companies into an integrated
             copper and non-ferrous metals recycling and manufacturing company &mdash; transforming
@@ -318,8 +314,8 @@ function About() {
           </ScrollColorReveal>
           <ScrollColorReveal
             as="p"
-            className="mt-10 max-w-2xl font-display text-2xl italic md:text-3xl"
-            from="rgba(249, 244, 240, 0.2)"
+            className="mt-10 max-w-2xl font-display text-2xl italic text-[#b26235] md:text-3xl"
+            from="rgba(178, 98, 53, 0.15)"
             to="#b26235"
             start="top 85%"
             end="bottom 65%"
@@ -328,7 +324,7 @@ function About() {
           </ScrollColorReveal>
           <Link
             to="/about"
-            className="mt-10 inline-flex items-center gap-2 rounded-full border border-cream/40 px-6 py-3 text-sm transition-colors hover:bg-cream hover:text-ink"
+            className="mt-10 inline-flex items-center gap-2 rounded-full border border-[#8e401a]/30 px-6 py-3 text-sm text-[#8e401a] transition-colors hover:bg-[#8e401a] hover:text-white"
           >
             See What We Do <ArrowUpRight className="h-4 w-4" />
           </Link>
@@ -445,15 +441,14 @@ function Certifications() {
           <Link to="/contact" className="link-underline text-sm">Get in touch →</Link>
         </div>
         <div className="mt-10 overflow-hidden">
-          <div className="marquee-track flex gap-12 whitespace-nowrap">
+          <div className="marquee-track flex items-center gap-16 whitespace-nowrap">
             {[...certs, ...certs, ...certs].map((c, i) => (
-              <div
+              <img
                 key={i}
-                className="flex h-16 min-w-[200px] items-center justify-center gap-2.5 rounded-lg border border-ink/10 bg-white px-6 font-display text-xl text-ink-soft"
-              >
-                <BadgeCheck className="h-5 w-5 shrink-0 text-accent" />
-                {c}
-              </div>
+                src={isoBadge}
+                alt={`${c} certified`}
+                className="h-28 w-auto shrink-0 object-contain md:h-32"
+              />
             ))}
           </div>
         </div>
