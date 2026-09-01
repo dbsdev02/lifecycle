@@ -16,7 +16,7 @@ import { CtaBand } from "@/components/site/CtaBand";
 import hero1 from "@/assets/svg-hero-16-9.jpg";
 import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
 import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
-import furnaceImg from "@/assets/svg-furnace.jpg";
+import hero1Jpeg from "@/assets/hero-1.jpeg";
 import industriesImg from "@/assets/svg-industries-16-9.jpg";
 import isoBadge from "@/assets/iso-certified.png";
 
@@ -155,8 +155,8 @@ const panels = [
     to: "/technologies",
     bg: "#dcb582",
     fg: "text-white",
-    img: furnaceImg,
-    imgAlt: "Molten copper glowing inside a melting furnace",
+    img: hero1Jpeg,
+    imgAlt: "Molten copper being poured inside the plant",
   },
   {
     tag: "03 — Industries",
@@ -293,7 +293,7 @@ function ScrollPanels() {
 
 function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-white py-28 text-[#8e401a] md:py-40">
+    <section id="about" className="relative overflow-hidden bg-[#FBF9F5] py-28 text-[#8e401a] md:py-40">
       <div className="mx-auto grid max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="text-xs uppercase tracking-[0.3em] text-[#8e401a]/50">About Us</p>
@@ -459,7 +459,7 @@ function Certifications() {
 
 function FinalCta() {
   return (
-    <section className="bg-cream py-20 md:py-28">
+    <section className="bg-[#FBF9F5] py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <CtaBand
           title="Let's Build Something Sustainable, Together."

@@ -26,7 +26,7 @@ const columns = [
 export function Footer() {
   const ref = useScrollFade<HTMLDivElement>({ y: 40, duration: 0.9, start: "top 95%" });
   return (
-    <footer ref={ref} className="bg-white pb-10 pt-16 text-[#8E401A]/75">
+    <footer ref={ref} className="bg-[#FBF9F5] pb-10 pt-16 text-black">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 border-b border-[#8E401A]/15 pb-14 md:grid-cols-4">
             <div className="md:col-span-2">
@@ -44,7 +44,7 @@ export function Footer() {
           </div>
           {columns.map((col) => (
             <div key={col.h}>
-              <div className="mb-4 text-sm uppercase tracking-[0.25em] text-[#8E401A]">{col.h}</div>
+              <div className="mb-4 text-sm uppercase tracking-[0.25em] text-black">{col.h}</div>
               <ul className="space-y-2.5 text-base md:text-lg">
                 {col.l.map((i) => (
                   <li key={i.label}>
@@ -57,7 +57,7 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-8 flex flex-col justify-between gap-4 text-sm text-[#8E401A]/55 md:flex-row">
+        <div className="mt-8 flex flex-col justify-between gap-4 text-sm text-black/60 md:flex-row">
           <p>© {new Date().getFullYear()} SVG Metals Upcycling Limited. All rights reserved.</p>
           <p>Privacy · Terms · Cookies</p>
         </div>
