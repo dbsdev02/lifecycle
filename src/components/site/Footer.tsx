@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useScrollFade } from "@/components/site/motion";
-import svgLogo from "@/assets/svg-logo-website-c.png";
+import svgLogo from "@/assets/svg-gradient-logo-grey.png";
 
 const columns = [
   {

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Globe, ChevronDown } from "lucide-react";
-import svgLogo from "@/assets/svg-logo-website-w.png";
+import svgLogo from "@/assets/svg-gradient-logo-white.png";
 
 const links = [
   { label: "Home", to: "/" },
