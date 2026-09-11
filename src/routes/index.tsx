@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   ChevronDown,
@@ -18,10 +18,12 @@ import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
 import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
 import hero1Jpeg from "@/assets/hero-1.jpeg";
 import industriesImg from "@/assets/svg-industries-16-9.jpg";
+import facilityImg from "@/assets/svg-facility.jpg";
 import isoBadge from "@/assets/iso-certified.png";
 
 const heroImg    = hero1;
 const aboutImg   = wireCoilsImg;
+const heroSlides = [heroImg, industriesImg, facilityImg];
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -34,6 +36,7 @@ function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const bgRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const [slide, setSlide] = useState(0);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -49,18 +52,31 @@ function Hero() {
     };
   }, []);
 
+  useEffect(() => {
+    if (prefersReducedMotion() || heroSlides.length < 2) return;
+    const id = setInterval(() => {
+      setSlide((s) => (s + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section
       ref={sectionRef as never}
       className="relative h-screen min-h-[720px] w-full overflow-hidden bg-ink"
     >
       <div ref={bgRef} className="absolute inset-0">
-        <img
-          src={heroImg}
-          alt=""
-          aria-hidden
-          className="h-full w-full object-cover opacity-90 animate-ken-burns"
-        />
+        {heroSlides.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt=""
+            aria-hidden
+            className={`absolute inset-0 h-full w-full object-cover opacity-0 animate-ken-burns transition-opacity duration-1000 ease-in-out ${
+              i === slide ? "opacity-90" : ""
+            }`}
+          />
+        ))}
       </div>
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/40 via-ink/5 to-transparent" />
       <div
@@ -126,6 +142,22 @@ function Hero() {
           </a>
         </div>
       </div>
+
+      {heroSlides.length > 1 && (
+        <div className="absolute bottom-20 right-4 z-10 flex gap-2 sm:right-6 md:bottom-28">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setSlide(i)}
+              aria-label={`Show hero slide ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all ${
+                i === slide ? "w-8 bg-cream" : "w-1.5 bg-cream/40 hover:bg-cream/60"
+              }`}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cream/70 animate-fade-in">
         <ChevronDown className="h-5 w-5 animate-bounce" />
