@@ -174,7 +174,7 @@ function ProcessPage() {
               </div>
             ))}
           </div>
-          <p className="mx-auto mt-14 max-w-3xl text-left text-pretty font-display text-xl italic leading-relaxed text-ink md:text-2xl">
+          <p className="mx-auto mt-14 max-w-5xl text-left text-pretty font-display text-xl italic leading-relaxed text-ink md:text-2xl">
             On the upstream side, our infrastructure handles the parts of this process most
             manufacturers never touch directly —
             <br />
