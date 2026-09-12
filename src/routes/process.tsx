@@ -174,13 +174,21 @@ function ProcessPage() {
               </div>
             ))}
           </div>
-          <p className="mx-auto mt-14 max-w-3xl text-center font-display text-xl italic leading-relaxed text-ink md:text-2xl">
+          <p className="mx-auto mt-14 max-w-3xl text-left text-pretty font-display text-xl italic leading-relaxed text-ink md:text-2xl">
             On the upstream side, our infrastructure handles the parts of this process most
-            manufacturers never touch directly — mechanical stripping and granulation of insulated
-            cable scrap, and the pulverising and fire refining of low-grade copper dross, slag and
-            dust with a copper content of 20% and above. Through physical separation, extraction and
-            electrolytic refining, we convert these secondary materials into intermediate copper
-            anodes, and upcycle them further into high-purity refined copper cathodes — 99.99% pure.
+            manufacturers never touch directly —
+            <br />
+            mechanical stripping and granulation of insulated cable scrap,
+            <br />
+            and the pulverising and fire refining of low-grade copper dross, slag and dust
+            <br />
+            with a copper content of 20% and above.
+            <br />
+            Through physical separation, extraction and electrolytic refining,
+            <br />
+            we convert these secondary materials into intermediate copper anodes,
+            <br />
+            and upcycle them further into high-purity refined copper cathodes — 99.99% pure.
           </p>
         </div>
       </section>
