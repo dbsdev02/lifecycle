@@ -20,7 +20,7 @@ function ProductDetailPage() {
   const categoryLabel = product.category === "copper" ? "Copper" : "Brass";
 
   return (
-    <main className="bg-cream">
+    <main className="bg-white">
       <section className="relative overflow-hidden bg-ink pb-16 pt-36 text-cream md:pb-20 md:pt-44">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <p className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.25em] text-cream/50">
@@ -130,7 +130,7 @@ function ProductDetailPage() {
         </section>
       )}
 
-      <section className="bg-cream pb-24 md:pb-32">
+      <section className="bg-white pb-24 md:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <CtaBand
             title="Need This to a Custom Specification?"

@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GreentecRouteImport } from './routes/greentec'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as InvestorsRouteImport } from './routes/investors'
+import { Route as ProcessRouteImport } from './routes/process'
 import { Route as TechnologiesRouteImport } from './routes/technologies'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as ProductsSlugRouteImport } from './routes/products/$slug'
@@ -49,6 +50,11 @@ const InvestorsRoute = InvestorsRouteImport.update({
   path: '/investors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TechnologiesRoute = TechnologiesRouteImport.update({
   id: '/technologies',
   path: '/technologies',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/greentec': typeof GreentecRoute
   '/industries': typeof IndustriesRoute
   '/investors': typeof InvestorsRoute
+  '/process': typeof ProcessRoute
   '/technologies': typeof TechnologiesRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/greentec': typeof GreentecRoute
   '/industries': typeof IndustriesRoute
   '/investors': typeof InvestorsRoute
+  '/process': typeof ProcessRoute
   '/technologies': typeof TechnologiesRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products': typeof ProductsIndexRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/greentec': typeof GreentecRoute
   '/industries': typeof IndustriesRoute
   '/investors': typeof InvestorsRoute
+  '/process': typeof ProcessRoute
   '/technologies': typeof TechnologiesRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/greentec'
     | '/industries'
     | '/investors'
+    | '/process'
     | '/technologies'
     | '/products/$slug'
     | '/products/'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/greentec'
     | '/industries'
     | '/investors'
+    | '/process'
     | '/technologies'
     | '/products/$slug'
     | '/products'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/greentec'
     | '/industries'
     | '/investors'
+    | '/process'
     | '/technologies'
     | '/products/$slug'
     | '/products/'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   GreentecRoute: typeof GreentecRoute
   IndustriesRoute: typeof IndustriesRoute
   InvestorsRoute: typeof InvestorsRoute
+  ProcessRoute: typeof ProcessRoute
   TechnologiesRoute: typeof TechnologiesRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InvestorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/technologies': {
       id: '/technologies'
       path: '/technologies'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   GreentecRoute: GreentecRoute,
   IndustriesRoute: IndustriesRoute,
   InvestorsRoute: InvestorsRoute,
+  ProcessRoute: ProcessRoute,
   TechnologiesRoute: TechnologiesRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   ProductsIndexRoute: ProductsIndexRoute,

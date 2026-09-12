@@ -84,7 +84,7 @@ const industries = [
 function IndustriesPage() {
   const ref = useScrollFade<HTMLDivElement>({ children: true, stagger: 0.06, y: 20 });
   return (
-    <main className="bg-cream">
+    <main className="bg-white">
       <PageHero
         crumb="Industries"
         eyebrow="Industries We Serve"

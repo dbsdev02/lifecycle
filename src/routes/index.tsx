@@ -11,7 +11,7 @@ import {
   Layers,
 } from "lucide-react";
 import { gsap, prefersReducedMotion } from "@/lib/scroll";
-import { useRotator, SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
+import { SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/CtaBand";
 import hero1 from "@/assets/svg-hero-16-9.jpg";
 import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
@@ -19,7 +19,14 @@ import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
 import hero1Jpeg from "@/assets/hero-1.jpeg";
 import industriesImg from "@/assets/svg-industries-16-9.jpg";
 import facilityImg from "@/assets/svg-facility.jpg";
-import isoBadge from "@/assets/iso-certified.png";
+import certBme from "@/assets/cert-bme.png";
+import certBnma from "@/assets/cert-bnma.png";
+import certMsme from "@/assets/cert-msme.png";
+import certIso9001 from "@/assets/cert-iso-9001.png";
+import certIso14001 from "@/assets/cert-iso-14001.png";
+import certIso45001 from "@/assets/cert-iso-45001.png";
+import certMpcb from "@/assets/cert-mpcb.png";
+import certGem from "@/assets/cert-gem.png";
 
 const heroImg    = hero1;
 const aboutImg   = wireCoilsImg;
@@ -32,11 +39,12 @@ export const Route = createFileRoute("/")({
 const rotatingWords = ["Reduce", "Reuse", "Recycle"];
 
 function Hero() {
-  const word = useRotator(rotatingWords);
   const sectionRef = useRef<HTMLElement | null>(null);
   const bgRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const [slide, setSlide] = useState(0);
+  const [i, setI] = useState(0);
+  const word = rotatingWords[i % rotatingWords.length];
+  const slide = i % heroSlides.length;
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -53,10 +61,8 @@ function Hero() {
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion() || heroSlides.length < 2) return;
-    const id = setInterval(() => {
-      setSlide((s) => (s + 1) % heroSlides.length);
-    }, 6000);
+    if (prefersReducedMotion()) return;
+    const id = setInterval(() => setI((v) => v + 1), 2400);
     return () => clearInterval(id);
   }, []);
 
@@ -145,14 +151,14 @@ function Hero() {
 
       {heroSlides.length > 1 && (
         <div className="absolute bottom-20 right-4 z-10 flex gap-2 sm:right-6 md:bottom-28">
-          {heroSlides.map((_, i) => (
+          {heroSlides.map((_, idx) => (
             <button
-              key={i}
+              key={idx}
               type="button"
-              onClick={() => setSlide(i)}
-              aria-label={`Show hero slide ${i + 1}`}
+              onClick={() => setI(idx)}
+              aria-label={`Show hero slide ${idx + 1}`}
               className={`h-1.5 rounded-full transition-all ${
-                i === slide ? "w-8 bg-cream" : "w-1.5 bg-cream/40 hover:bg-cream/60"
+                idx === slide ? "w-8 bg-cream" : "w-1.5 bg-cream/40 hover:bg-cream/60"
               }`}
             />
           ))}
@@ -284,7 +290,7 @@ function ScrollPanels() {
   }
 
   return (
-    <section id="products" ref={wrapperRef} className="relative h-screen w-full overflow-hidden bg-cream">
+    <section id="products" ref={wrapperRef} className="relative h-screen w-full overflow-hidden bg-white">
       {panels.map((p, i) => (
         <div
           key={p.title}
@@ -325,7 +331,7 @@ function ScrollPanels() {
 
 function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-[#FBF9F5] py-28 text-[#8e401a] md:py-40">
+    <section id="about" className="relative overflow-hidden bg-white py-28 text-[#8e401a] md:py-40">
       <div className="mx-auto grid max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="text-xs uppercase tracking-[0.3em] text-[#8e401a]/50">About Us</p>
@@ -389,7 +395,7 @@ function StatTile({ s }: { s: (typeof stats)[number] }) {
 function Impact() {
   const statsRef = useScrollFade<HTMLDivElement>({ children: true, stagger: 0.15, y: 30 });
   return (
-    <section className="bg-cream py-28 md:py-36">
+    <section className="bg-white py-28 md:py-36">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
@@ -462,27 +468,36 @@ function Capabilities() {
   );
 }
 
-const certs = ["ISO 9001:2015", "ISO 14001:2015", "ISO 45001:2018"];
+const certs = [
+  { name: "ISO 9001:2015", logo: certIso9001 },
+  { name: "ISO 14001:2015", logo: certIso14001 },
+  { name: "ISO 45001:2018", logo: certIso45001 },
+  { name: "MSME Registered", logo: certMsme },
+  { name: "Maharashtra Pollution Control Board", logo: certMpcb },
+  { name: "Government e-Marketplace (GeM)", logo: certGem },
+  { name: "BNMA, Est. 1977", logo: certBnma },
+  { name: "BME Certified", logo: certBme },
+];
 
 function Certifications() {
   return (
-    <section id="certifications" className="border-y border-ink/10 bg-cream py-16">
+    <section id="certifications" className="border-y border-ink/10 bg-white py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-wrap items-center justify-between gap-8">
           <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Certified Operations</p>
           <Link to="/contact" className="link-underline text-sm">Get in touch →</Link>
         </div>
-        <div className="mt-10 overflow-hidden">
-          <div className="marquee-track flex items-center gap-16 whitespace-nowrap">
-            {[...certs, ...certs, ...certs].map((c, i) => (
-              <img
-                key={i}
-                src={isoBadge}
-                alt={`${c} certified`}
-                className="h-28 w-auto shrink-0 object-contain md:h-32"
-              />
-            ))}
-          </div>
+      </div>
+      <div className="mt-10 w-full overflow-hidden">
+        <div className="marquee-track flex items-center gap-16 whitespace-nowrap">
+          {[...certs, ...certs, ...certs].map((c, i) => (
+            <img
+              key={i}
+              src={c.logo}
+              alt={c.name}
+              className="h-14 w-auto shrink-0 object-contain md:h-16"
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -491,7 +506,7 @@ function Certifications() {
 
 function FinalCta() {
   return (
-    <section className="bg-[#FBF9F5] py-20 md:py-28">
+    <section className="bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <CtaBand
           title="Let's Build Something Sustainable, Together."
@@ -508,7 +523,7 @@ function FinalCta() {
 
 function Home() {
   return (
-    <main className="bg-cream">
+    <main className="bg-white">
       <Hero />
       <ScrollPanels />
       <About />

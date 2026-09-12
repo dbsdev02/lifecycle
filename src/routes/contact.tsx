@@ -59,7 +59,7 @@ const faqs = [
 
 function ContactPage() {
   return (
-    <main className="bg-cream">
+    <main className="bg-white">
       <PageHero
         crumb="Contact Us"
         eyebrow="Contact Us"

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, Package, Link2, Award } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
-import { Notice } from "@/components/site/Notice";
 
 export const Route = createFileRoute("/greentec")({
   component: GreentecPage,
@@ -16,7 +15,7 @@ const items = [
 
 function GreentecPage() {
   return (
-    <main className="bg-cream">
+    <main className="bg-white">
       <PageHero
         crumb="SVG Greentec"
         eyebrow="SVG Greentec Pvt. Ltd."
@@ -32,14 +31,7 @@ function GreentecPage() {
 
       <section className="py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <Notice>
-            The source brief lists this as a required page but includes no company details,
-            product/service information, or description of the relationship to SVG Metals
-            Upcycling Limited. The structure below is a placeholder — please supply the company
-            profile, offerings and brand relationship copy.
-          </Notice>
-
-          <div className="mt-16">
+          <div>
             <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Suggested Content to Gather</p>
             <h2 className="mt-4 font-display text-4xl leading-[1.1] text-ink md:text-5xl">
               What This Page Should Cover

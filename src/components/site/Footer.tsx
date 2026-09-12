@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useScrollFade } from "@/components/site/motion";
-import svgLogo from "@/assets/svg-gradient-logo-grey.png";
+import svgLogo from "@/assets/SVG LOGO (GRADIENT).png";
 
 const columns = [
   {
@@ -26,7 +26,7 @@ const columns = [
 export function Footer() {
   const ref = useScrollFade<HTMLDivElement>({ y: 40, duration: 0.9, start: "top 95%" });
   return (
-    <footer ref={ref} className="bg-[#FBF9F5] pb-10 pt-16 text-black">
+    <footer ref={ref} className="bg-white pb-10 pt-16 text-black">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 border-b border-[#8E401A]/15 pb-14 md:grid-cols-4">
             <div className="md:col-span-2">

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, TrendingUp, PieChart, Users, Megaphone, Phone } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
-import { Notice } from "@/components/site/Notice";
 
 export const Route = createFileRoute("/investors")({
   component: InvestorsPage,
@@ -18,7 +17,7 @@ const items = [
 
 function InvestorsPage() {
   return (
-    <main className="bg-cream">
+    <main className="bg-white">
       <PageHero
         crumb="Investors"
         eyebrow="Investors"
@@ -30,14 +29,7 @@ function InvestorsPage() {
 
       <section className="py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <Notice>
-            No investor relations details (listing status, financials, shareholding pattern, board
-            composition, disclosures, contacts) were included in the brief. The sections below
-            reflect standard IR page content — please confirm which apply and supply the underlying
-            documents/data.
-          </Notice>
-
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {items.map(({ icon: Icon, title, body }) => (
               <div key={title} className="rounded-2xl border border-ink/10 bg-white p-8">
                 <Icon className="h-8 w-8 text-accent" />

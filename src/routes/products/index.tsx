@@ -49,7 +49,7 @@ function ProductGrid({ items }: { items: Product[] }) {
 
 function ProductsPage() {
   return (
-    <main className="bg-cream">
+    <main className="bg-white">
       <PageHero
         crumb="Products"
         eyebrow="Products"
@@ -125,7 +125,7 @@ function ProductsPage() {
         </div>
       </section>
 
-      <section id="catalogue" className="bg-cream pb-24 md:pb-32">
+      <section id="catalogue" className="bg-white pb-24 md:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <CtaBand
             title="Product Catalogue"
