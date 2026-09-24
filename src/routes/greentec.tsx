@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, Package, Link2, Award } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
+import mehtacopImg from "@/assets/svg-mehtacop-factory.jpg";
 
 export const Route = createFileRoute("/greentec")({
   component: GreentecPage,
@@ -25,8 +26,8 @@ function GreentecPage() {
           </>
         }
         lead="Part of the SVG Metals group."
-        image="https://images.unsplash.com/photo-1722695694560-f452b0919d3a?w=1600&q=80&auto=format&fit=crop"
-        imageAlt="Scrap metal recycling yard"
+        image={mehtacopImg}
+        imageAlt="Mehta Copper Refinery factory"
       />
 
       <section className="py-24 md:py-32">

@@ -13,12 +13,12 @@ import {
 import { gsap, prefersReducedMotion } from "@/lib/scroll";
 import { SplitReveal, ScrollColorReveal, useScrollFade, RevealImage, useCountUp } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/CtaBand";
-import hero1 from "@/assets/svg-hero-16-9.jpg";
+import anodeCastingImg from "@/assets/svg-anode-casting.jpg";
+import factoryImg from "@/assets/svg-factory.jpg";
 import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
 import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
 import hero1Jpeg from "@/assets/hero-1.jpeg";
 import industriesImg from "@/assets/svg-industries-16-9.jpg";
-import facilityImg from "@/assets/svg-facility.jpg";
 import certBme from "@/assets/cert-bme.png";
 import certBnma from "@/assets/cert-bnma.png";
 import certMsme from "@/assets/cert-msme.png";
@@ -28,9 +28,8 @@ import certIso45001 from "@/assets/cert-iso-45001.png";
 import certMpcb from "@/assets/cert-mpcb.png";
 import certGem from "@/assets/cert-gem.png";
 
-const heroImg    = hero1;
 const aboutImg   = wireCoilsImg;
-const heroSlides = [heroImg, industriesImg, facilityImg];
+const heroSlides = [anodeCastingImg, industriesImg, factoryImg];
 
 export const Route = createFileRoute("/")({
   component: Home,

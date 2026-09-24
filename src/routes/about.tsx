@@ -9,9 +9,10 @@ import {
 } from "lucide-react";
 import { SplitReveal } from "@/components/site/motion";
 import { PageHero } from "@/components/site/PageHero";
-import facilityImg from "@/assets/svg-facility.jpg";
-import leaderPhoto1 from "@/assets/svg-leader-1.jpg";
-import leaderPhoto2 from "@/assets/svg-leader-2.jpg";
+import factoryImg from "@/assets/svg-factory.jpg";
+import leaderPyarchand from "@/assets/svg-leader-pyarchand.jpg";
+import leaderManish from "@/assets/svg-leader-manish.jpg";
+import leaderPravin from "@/assets/svg-leader-pravin.jpg";
 import timelineImg from "@/assets/svg-timeline-transparent.png";
 
 export const Route = createFileRoute("/about")({
@@ -21,20 +22,21 @@ export const Route = createFileRoute("/about")({
 const leadership = [
   {
     initials: "PJ",
-    photo: leaderPhoto1,
+    photo: leaderPyarchand,
     name: "Pyarchand B. Jain",
     role: "Chairman",
     body: "Founder of the Nakoda Group of Companies, established in 1978 on a foundation of integrity, craftsmanship and quality.",
   },
   {
     initials: "MJ",
-    photo: leaderPhoto2,
+    photo: leaderManish,
     name: "Manish Jain",
     role: "Managing Director",
     body: "Carries forward the group's legacy, combining decades of industry values with a forward-looking approach.",
   },
   {
     initials: "PJ",
+    photo: leaderPravin,
     name: "Pravin Jain",
     role: "Executive Director",
     body: "Brings deep industry expertise and a steady, hands-on leadership approach to operations and growth strategy.",
@@ -64,7 +66,7 @@ function AboutPage() {
         crumb="About Us"
         eyebrow="About Us"
         title="A Legacy of Integrity, Craftsmanship and Quality Since 1978."
-        image={facilityImg}
+        image={factoryImg}
         imageAlt="Workers and machinery at the SVG Metals scrap yard"
       />
 

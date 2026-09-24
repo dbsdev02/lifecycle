@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SplitReveal, useScrollFade } from "@/components/site/motion";
 import { PageHero } from "@/components/site/PageHero";
-import facilityImg from "@/assets/svg-facility.jpg";
+import factoryImg from "@/assets/svg-factory.jpg";
 import furnaceImg from "@/assets/svg-furnace.jpg";
 import industriesImg from "@/assets/svg-industries-16-9.jpg";
 
@@ -24,6 +24,57 @@ const units = [
     imageAlt: "High-purity copper cathode sheets lifted at an electrorefining plant",
     body: "Core operations here are anode casting and electrolytic cathode upcycling to 99.99% purity, alongside cable recycling and copper rod production.",
   },
+];
+
+const infrastructure = [
+  {
+    title: "Melting & Casting",
+    items: ["Induction Furnace — 450 kW / 1,200 kg × 2", "Gas Fired Furnace — 1,100 kg × 3"],
+  },
+  { title: "Extrusion", items: ["Extrusion Hydraulic Press — 1,600 MT"] },
+  {
+    title: "Annealing Furnace",
+    items: [
+      "Gas Fired Billet Heating Furnace",
+      "Gas Fired Roller-Type Annealing Furnace",
+      "Electric Pot Bright Annealing Furnace",
+    ],
+  },
+  {
+    title: "Drawing Facility",
+    items: [
+      "Pilger Mill LG 75",
+      "Pilger Mill LG 30",
+      "Bullblock × 2",
+      "Heavy Draw Bench × 4",
+      "Semi Heavy Draw Bench × 4",
+      "Light Draw Bench × 4",
+    ],
+  },
+  {
+    title: "Allied Equipment",
+    items: [
+      "Pointing, cutting, swaging, polishing & finishing machinery",
+      "Workshop machinery — lathe, milling, drilling, grinding, shearing & welding",
+    ],
+  },
+  {
+    title: "Testing Facilities (incl. Chemical Analysis)",
+    items: [
+      "Spectrometer — S3 MINI LAB 300",
+      "Eddy current testing",
+      "Hydrostatic testing",
+      "Pneumatic testing",
+      "Hardness testing",
+      "Tensile testing (UTS)",
+      "Residue testing",
+      "Conductivity testing",
+      "Hydrogen embrittlement furnace — 1,100 °C",
+      "Microscope",
+      "Straight edge testing",
+    ],
+  },
+  { title: "Captive Power", items: ["D.G. Set — 500 kVA × 1", "D.G. Set — 125 kVA × 1"] },
 ];
 
 function Chain() {
@@ -50,7 +101,7 @@ function TechnologiesPage() {
         eyebrow="Infrastructure"
         title="Everything Under One Roof — From Scrap to Finished Product."
         lead="Our technology and processes are what set SVG Metals apart: an integrated system that takes metal from scrap to finished product without ever leaving our control."
-        image={facilityImg}
+        image={factoryImg}
         imageAlt="Workers and machinery at the SVG Metals scrap yard"
       />
 
@@ -107,6 +158,30 @@ function TechnologiesPage() {
         </div>
       </section>
 
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Our Infrastructure</p>
+          <SplitReveal as="h2" className="mt-4 max-w-3xl font-display text-4xl leading-[1.1] md:text-5xl">
+            SVG Metals Upcycling Pvt Ltd
+          </SplitReveal>
+          <p className="mt-5 max-w-3xl text-black">Spread around 2.5 acres.</p>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {infrastructure.map((g) => (
+              <div key={g.title} className="rounded-2xl border border-ink/10 bg-white p-8">
+                <h3 className="font-display text-xl text-ink">{g.title}</h3>
+                <ul className="mt-4 space-y-2">
+                  {g.items.map((item) => (
+                    <li key={item} className="flex gap-2 text-sm leading-relaxed text-black">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

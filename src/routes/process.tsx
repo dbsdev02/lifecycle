@@ -5,6 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { CtaBand } from "@/components/site/CtaBand";
 import furnaceImg from "@/assets/svg-furnace.jpg";
 import processFlowImg from "@/assets/svg-process-flow.jpg";
+import diagramImg from "@/assets/svg-diagram.jpg";
 
 export const Route = createFileRoute("/process")({
   component: ProcessPage,
@@ -160,6 +161,12 @@ function ProcessPage() {
           alt="Manufacturing process flow: raw materials, melting, casting, billet cutting, billet heating, extrusion, drawing/reducing, annealing, pickling, coating, straightening, cutting and end debarring, hydro pressure and eddy current testing, stress relieving, final inspection, packing and shipping"
           loading="lazy"
           className="mx-auto mt-12 max-w-6xl px-4 sm:px-6"
+        />
+        <img
+          src={diagramImg}
+          alt="Copper refining flow: raw material (copper scrap, dross, slag, cathode returns, insulated cables), melting, casting into anodes, electrolysis, and 99.99% pure copper cathode"
+          loading="lazy"
+          className="mx-auto mt-16 max-w-6xl px-4 sm:px-6"
         />
       </section>
 

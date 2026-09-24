@@ -14,12 +14,18 @@ const factoryAddress =
 const factoryCoords = "20.122926,72.916403";
 
 const info = [
-  { k: "Corporate Office", v: "803, DLH Park, S.V. Road, Goregaon West, Mumbai – 400104" },
-  { k: "Factory Address", v: factoryAddress },
-  { k: "Phone", v: "[[client to supply]]" },
-  { k: "WhatsApp", v: "[[client to supply]]" },
-  { k: "Email", v: "info@svgmetals.com" },
-  { k: "Social Media", v: "[[LinkedIn / Instagram / Facebook links to be supplied]]" },
+  {
+    k: "Corporate Office",
+    v: ["803, DLH Park, S.V. Road, Goregaon West, Mumbai – 400104, Maharashtra, India", "Landline: +91 22 4743 2006"],
+  },
+  {
+    k: "Unit 1 — SVG Metals Upcycling Pvt Ltd",
+    v: [`${factoryAddress}, India`, "Mr. Manish P. Jain: +91 98334 74799", "Mr. Rajat Ranka: +91 87939 55270"],
+  },
+  { k: "Unit 2 — Mehtacop Refinery Pvt Ltd", v: ["8/4/A Girgaon, Talasari, Palghar, Maharashtra, India"] },
+  { k: "Website", v: ["www.svgupcycling.com"] },
+  { k: "Email", v: ["info@svgupcycling.com"] },
+  { k: "Social Media", v: ["[[LinkedIn / Instagram / Facebook links to be supplied]]"] },
 ];
 
 const faqs = [
@@ -77,7 +83,13 @@ function ContactPage() {
               {info.map((i) => (
                 <li key={i.k} className="border-b border-ink/10 pb-5">
                   <span className="block text-xs uppercase tracking-[0.2em] text-ink-soft">{i.k}</span>
-                  <span className="mt-1 block text-ink">{i.v}</span>
+                  <span className="mt-1 block text-ink">
+                    {i.v.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </span>
                 </li>
               ))}
             </ul>

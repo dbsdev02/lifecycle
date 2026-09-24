@@ -17,7 +17,6 @@ const links = [
   { label: "Products", to: "/products" },
   { label: "Process", to: "/process" },
   { label: "Mehta Cop", to: "/greentec" },
-  { label: "Investors", to: "/investors" },
   { label: "Contact Us", to: "/contact" },
 ] as const;
 
