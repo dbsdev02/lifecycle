@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { SplitReveal, useScrollFade } from "@/components/site/motion";
 import { PageHero } from "@/components/site/PageHero";
-import { Notice } from "@/components/site/Notice";
 import { CtaBand } from "@/components/site/CtaBand";
 import { products, type Product } from "@/data/products";
 import copperRodsImg from "@/assets/svg-copper-rods.jpg";
@@ -83,13 +82,6 @@ function ProductsPage() {
             Manufactured to serve electrical, engineering, plumbing and industrial applications.
           </p>
           <ProductGrid items={brassProducts} />
-          <div className="mt-10">
-            <Notice>
-              Additional brass SKUs and detailed technical specifications (alloys, grades,
-              tolerances) were not included in the brief — please supply for a complete product
-              datasheet.
-            </Notice>
-          </div>
         </div>
       </section>
 

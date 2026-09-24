@@ -17,7 +17,6 @@ import anodeCastingImg from "@/assets/svg-anode-casting.jpg";
 import factoryImg from "@/assets/svg-factory.jpg";
 import wireCoilsImg from "@/assets/svg-wire-coils.jpg";
 import copperTurningsImg from "@/assets/svg-copper-turnings.jpg";
-import hero1Jpeg from "@/assets/hero-1.jpeg";
 import industriesImg from "@/assets/svg-industries-16-9.jpg";
 import certBme from "@/assets/cert-bme.png";
 import certBnma from "@/assets/cert-bnma.png";
@@ -78,17 +77,12 @@ function Hero() {
             alt=""
             aria-hidden
             className={`absolute inset-0 h-full w-full object-cover opacity-0 animate-ken-burns transition-opacity duration-1000 ease-in-out ${
-              i === slide ? "opacity-90" : ""
+              i === slide ? "opacity-100" : ""
             }`}
           />
         ))}
       </div>
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/40 via-ink/5 to-transparent" />
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{ background: "linear-gradient(90deg, #000000 0%, #000000cc 35%, #00000000 60%)" }}
-      />
       {/* Dot pattern */}
       <div
         aria-hidden
@@ -192,8 +186,8 @@ const panels = [
     to: "/technologies",
     bg: "#dcb582",
     fg: "text-white",
-    img: hero1Jpeg,
-    imgAlt: "Molten copper being poured inside the plant",
+    img: anodeCastingImg,
+    imgAlt: "Anode casting at the SVG Metals plant",
   },
   {
     tag: "03 — Industries",

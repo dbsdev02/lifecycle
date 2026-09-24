@@ -41,12 +41,6 @@ const leadership = [
     role: "Executive Director",
     body: "Brings deep industry expertise and a steady, hands-on leadership approach to operations and growth strategy.",
   },
-  {
-    initials: "CM",
-    name: "Chirag Majithia",
-    role: "CEO",
-    body: "Leads day-to-day operations and strategic direction, driving the company's evolution as an integrated enterprise.",
-  },
 ];
 
 const values = [
@@ -67,6 +61,7 @@ function AboutPage() {
         eyebrow="About Us"
         title="A Legacy of Integrity, Craftsmanship and Quality Since 1978."
         image={factoryImg}
+        imageFit
         imageAlt="Workers and machinery at the SVG Metals scrap yard"
       />
 
@@ -105,7 +100,7 @@ function AboutPage() {
               SVG Metals
             </SplitReveal>
           </div>
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {leadership.map((p) => (
               <div key={p.name} className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
                 {p.photo ? (

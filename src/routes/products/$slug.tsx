@@ -1,9 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowUpRight, ArrowLeft, CircleCheck } from "lucide-react";
 import { RevealImage, SplitReveal } from "@/components/site/motion";
-import { Notice } from "@/components/site/Notice";
 import { CtaBand } from "@/components/site/CtaBand";
-import { products, getProduct } from "@/data/products";
+import { products, getProduct, type Product } from "@/data/products";
 
 export const Route = createFileRoute("/products/$slug")({
   component: ProductDetailPage,
@@ -15,7 +14,7 @@ export const Route = createFileRoute("/products/$slug")({
 });
 
 function ProductDetailPage() {
-  const product = Route.useLoaderData();
+  const product = Route.useLoaderData() as Product;
   const related = products.filter((p) => p.category === product.category && p.slug !== product.slug).slice(0, 3);
   const categoryLabel = product.category === "copper" ? "Copper" : "Brass";
 
@@ -73,13 +72,35 @@ function ProductDetailPage() {
                 {product.tagline}
               </h2>
               <p className="mt-6 max-w-2xl text-ink-soft">{product.detail}</p>
-              <div className="mt-8 max-w-2xl">
-                <Notice>
-                  Detailed technical specifications (alloys, grades, tolerances, standard sizes) for
-                  this product were not included in the brief — please supply for a complete
-                  datasheet.
-                </Notice>
-              </div>
+              {product.brand && (
+                <p className="mt-5 max-w-2xl text-xs uppercase tracking-[0.15em] text-accent">{product.brand}</p>
+              )}
+              {product.sections?.map((sec) => (
+                <div key={sec.title} className="mt-10 max-w-2xl">
+                  <h3 className="font-display text-xl text-ink">{sec.title}</h3>
+                  <ul className="mt-3 space-y-1.5">
+                    {sec.items.map((it) => (
+                      <li key={it} className="flex gap-2 text-sm text-ink-soft">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                        {it}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              {product.gallery && product.gallery.length > 0 && (
+                <div className="mt-12 grid max-w-2xl gap-4 sm:grid-cols-2">
+                  {product.gallery.map((g, i) => (
+                    <img
+                      key={g}
+                      src={g}
+                      alt={`${product.title} ${i + 2}`}
+                      loading="lazy"
+                      className="aspect-[4/3] w-full rounded-xl object-cover"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">Applications</p>
@@ -130,7 +151,7 @@ function ProductDetailPage() {
         </section>
       )}
 
-      <section className="bg-white pb-24 md:pb-32">
+      <section className="bg-white pb-24 pt-24 md:pb-32 md:pt-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <CtaBand
             title="Need This to a Custom Specification?"

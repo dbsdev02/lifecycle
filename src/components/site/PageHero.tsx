@@ -9,6 +9,7 @@ export function PageHero({
   crumb,
   image,
   imageAlt,
+  imageFit,
 }: {
   eyebrow: string;
   title: ReactNode;
@@ -16,16 +17,19 @@ export function PageHero({
   crumb: string;
   image?: string;
   imageAlt?: string;
+  imageFit?: boolean;
 }) {
   return (
-    <section className="relative overflow-hidden bg-ink pb-16 pt-36 text-cream md:pb-20 md:pt-44">
+    <section
+      className="relative overflow-hidden bg-ink pb-16 pt-36 text-cream md:pb-20 md:pt-44"
+    >
       {image ? (
         <>
           <img
             src={image}
             alt={imageAlt ?? ""}
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover"
+            className={`absolute inset-0 h-full w-full ${imageFit ? "object-fill" : "object-cover"}`}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-ink/45 via-ink/25 to-transparent" />
         </>

@@ -102,6 +102,7 @@ function TechnologiesPage() {
         title="Everything Under One Roof — From Scrap to Finished Product."
         lead="Our technology and processes are what set SVG Metals apart: an integrated system that takes metal from scrap to finished product without ever leaving our control."
         image={factoryImg}
+        imageFit
         imageAlt="Workers and machinery at the SVG Metals scrap yard"
       />
 
