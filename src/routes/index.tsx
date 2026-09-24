@@ -83,6 +83,11 @@ function Hero() {
         ))}
       </div>
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/40 via-ink/5 to-transparent" />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.18) 40%, rgba(0,0,0,0) 65%)" }}
+      />
       {/* Dot pattern */}
       <div
         aria-hidden
